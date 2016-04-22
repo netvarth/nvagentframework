@@ -6,5 +6,9 @@
   <packaging>pom</packaging>
   <modules>
   	<module>api</module>
+  	<module>bl</module>
+  	<module>pl</module>
+  	<module>service</module>
+  	<module>resource</module>
   </modules>
 </project>
