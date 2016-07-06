@@ -4,11 +4,5 @@
   <artifactId>agent</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <modules>
-  	<module>api</module>
-  	<module>bl</module>
-  	<module>pl</module>
-  	<module>service</module>
-  	<module>resource</module>
-  </modules>
+  
 </project>
