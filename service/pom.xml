@@ -1,15 +1,16 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>agent</groupId>
-    <artifactId>agent</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
-  <artifactId>service</artifactId>
-    <build>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>agent</groupId>
+		<artifactId>agent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>service</artifactId>
+	<build>
 		<plugins>
 
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
@@ -19,9 +20,9 @@
 						<id>attach-javadocs</id>
 						<goals>
 							<goal>jar</goal>
-							
+
 						</goals>
-						</execution>
+					</execution>
 
 				</executions>
 				<configuration>
@@ -39,38 +40,37 @@
 			<artifactId>pl</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-
 		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>common</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>bl</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<!-- <dependency>
 			<groupId>com.nv.youneverwait</groupId>
 			<artifactId>bl</artifactId>
 			<version>${project.version}</version>
-		</dependency> -->
-		<!-- <dependency>
-			<groupId>com.nv.youneverwait</groupId>
-			<artifactId>api</artifactId>
-			<version>${project.version}</version>
-		</dependency> 
+		</dependency>
 		<dependency>
 			<groupId>com.nv.platform</groupId>
-			<artifactId>ynwagentframework</artifactId>
-			<version>${project.version}</version>
-		</dependency>-->
-			<dependency>
-            <groupId>org.quartz-scheduler</groupId>
-            <artifactId>quartz</artifactId>
-            <version>${quartz.version}</version>
-        </dependency>
-			
+			<artifactId>nvJSON</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.nv.platform</groupId>
+			<artifactId>email</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.nv.platform</groupId>
+			<artifactId>health</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.nv.platform</groupId>
+			<artifactId>logapi</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>${quartz.version}</version>
+		</dependency>
+
 	</dependencies>
 </project>

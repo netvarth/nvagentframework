@@ -53,19 +53,11 @@
 			<version>5.1.6</version>
 		</dependency>
 
-
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>common</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-
 		<dependency>
 			<groupId>com.nv.youneverwait</groupId>
 			<artifactId>api</artifactId>
-			<version>${project.version}</version>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-
 		
 		<dependency>
 			<groupId>org.springframework</groupId>

@@ -13,7 +13,7 @@
   	<module>pl</module>
   	<module>service</module>
   	<module>resource</module>
-  	<module>common</module>
+  
   </modules>
   <build>
 		<pluginManagement>

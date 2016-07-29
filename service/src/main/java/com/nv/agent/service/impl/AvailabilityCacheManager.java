@@ -1,4 +1,5 @@
 package com.nv.agent.service.impl;
+
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
@@ -10,14 +11,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.persistence.Query;
-
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.nv.agent.repository.ReadDaoImpl;
-import com.nv.agent.repository.cache.CacheDaoImpl;
 import com.nv.platform.base.dao.PersistenceException;
 import com.nv.platform.base.dao.ReadDao;
 import com.nv.platform.base.exception.ErrorStatusType;
@@ -47,20 +45,17 @@ import com.nv.ynw.cache.availability.ServiceSchedule;
 import com.nv.ynw.cache.availability.WorkMap;
 import com.nv.ynw.cache.availability.WorkMap.BookedAppointment;
 import com.nv.ynw.service.dto.Service;
-import org.springframework.scheduling.quartz.QuartzJobBean;
 
 /**
  * Availability cache Manager
  * @author Asha
  */
-
-
 public class AvailabilityCacheManager extends QuartzJobBean{
 	NVLogger logger = NVLoggerAPIFactory.getLogger(AvailabilityCacheManager.class);
-	private ReadDao readDao ;
-	private CacheDao cacheDao ;
-	private JSONMapper objectMapper ;
-
+	private ReadDao readDao;
+	private CacheDao cacheDao;
+	private JSONMapper objectMapper;
+	
 	private static final String get_account_schedule_details = "select new com.nv.ynw.cache.availability.AccountSchedule(account.accountId.id,account.minApmtTime,account.businessSchedule) from AccountProfileEntity as account order by account.accountId.id asc ";
 	private static final String get_appmnt_duration_services = "select new com.nv.ynw.service.dto.Service(service.id,service.appmtDuration) from ServiceEntity as service where service.account.id=:param1";
 	private static final String get_schedules_of_provider = "select new com.nv.ynw.cache.availability.Schedule(schedule.id,schedule.timeSlot) from ProviderScheduleEntity as schedule where schedule.provider.userProfile.id=:param1";
@@ -75,13 +70,21 @@ public class AvailabilityCacheManager extends QuartzJobBean{
 	private  static final String get_previous_provider_schedules_count ="select count(*) from ProviderScheduleCache  as prvSchedule where prvSchedule.dateOfAvailability<CURDATE()";
 	private  static final String get_previous_provider_schedules_count_of_acc = "select count(*) from ProviderScheduleCache  as prvSchedule where prvSchedule.dateOfAvailability<CURDATE() and prvSchedule.accountId=:param1";
 
-
+/*	public AvailabilityCacheManager(ReadDao readDao, CacheDao cacheDao, JSONMapper objectMapper) {
+		super();
+		this.readDao = readDao;
+		this.cacheDao = cacheDao;
+		this.objectMapper = objectMapper;
+	}*/
+	/*public AvailabilityCacheManager(){
+		
+	}*/
 	@Override
 	protected void executeInternal(JobExecutionContext arg0) throws JobExecutionException {
-		System.out.println("Executing user agent 1 "+new Date());
+		System.out.println("In agent --cachemanger"+new Date());
+		CacheEntity cacheEntity;
 		try {
-			CacheEntity cacheEntity = cacheDao.executeUniqueQuery(CacheEntity.class,get_cache_status_by_name,"provider-availability");
-
+			cacheEntity = cacheDao.executeUniqueQuery(CacheEntity.class,get_cache_status_by_name,"provider-availability");
 			if(cacheEntity==null){
 				return;
 			}
@@ -91,9 +94,9 @@ public class AvailabilityCacheManager extends QuartzJobBean{
 			}
 			cacheEntity.setCacheStatus(CacheStatus.InProcess);
 			cacheDao.update(cacheEntity);
-
-
-			long count = readDao.executeUniqueQuery(Long.class, get_account_count); //get total account count
+			
+			
+		    long count = readDao.executeUniqueQuery(Long.class, get_account_count); //get total account count
 
 			/*
 			 * Build provider availability cache for accounts(100 accounts at a time)
@@ -117,11 +120,8 @@ public class AvailabilityCacheManager extends QuartzJobBean{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
-	/*//@Override
-	public void execute(JobExecutionContext context) throws JobExecutionException {
-
-	}*/
 
 	/**
 	 * Build and save availabilities of all providers for a limited range of accounts
@@ -592,7 +592,4 @@ public class AvailabilityCacheManager extends QuartzJobBean{
 	public void setObjectMapper(JSONMapper objectMapper) {
 		this.objectMapper = objectMapper;
 	}
-
-
-
 }

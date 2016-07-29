@@ -14,7 +14,7 @@
 	<!-- For testing simpleTrigger jobs -->
 	<!-- <bean id="myBean" class="com.nv.agent.service.impl.TestSimpleTrigger"/> -->
 
-	<bean name="cache.manager.job"
+	<bean name="userAgent.cache.manager"
 		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 		<property name="jobClass"
 			value="com.nv.agent.service.impl.AvailabilityCacheManager" />
@@ -27,30 +27,22 @@
 		</property>
 		<property name="durability" value="true" />
 	</bean>
-	
-	<!-- Run the job every 2 minutes  -->
-	<bean id="cache.manager.job.cronTrigger"
+
+	<!-- Run the job every 2 minutes -->
+	<bean id="userAgent.cache.manager.cronTrigger"
 		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-		<property name="jobDetail" ref="cache.manager.job" />
-		<property name="cronExpression" value="0 45 10 * * ?" />
+		<property name="jobDetail" ref="userAgent.cache.manager" />
+		<property name="cronExpression" value="0 01 16 * * ?" />
 	</bean>
 
 
 	<bean name="user.agent"
 		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-		<property name="jobClass"
-			value="com.nv.agent.service.impl.UserAgent2" />
-		<property name="jobDataMap">
-			<map>
-				<entry key="readDao" value-ref="read.dao" />
-				<entry key="cacheDao" value-ref="cache.dao" />
-				<entry key="objectMapper" value-ref="object.mapper" />
-			</map>
-		</property>
+		<property name="jobClass" value="com.nv.agent.service.impl.UserAgent2" />
 		<property name="durability" value="true" />
 	</bean>
-	
-	<!-- Run the job every 2 minutes  -->
+
+	<!-- Run the job every 2 minutes -->
 	<bean id="user.agent.cronTrigger"
 		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="user.agent" />
@@ -67,7 +59,7 @@
 		<property name="jobDetails">
 			<list>
 				<!-- <ref bean="simpleJobDetail" /> -->
-				<ref bean="cache.manager.job" />
+				<ref bean="userAgent.cache.manager" />
 				<ref bean="user.agent" />
 			</list>
 		</property>
@@ -75,18 +67,28 @@
 		<property name="triggers">
 			<list>
 				<!-- <ref bean="simpleTrigger" /> -->
-				<ref bean="cache.manager.job.cronTrigger" />
+				<ref bean="userAgent.cache.manager.cronTrigger" />
 				<ref bean="user.agent.cronTrigger" />
 			</list>
 		</property>
 	</bean>
 
 
-
-
+	<!-- <bean id="availability.cache.manager" class="com.nv.agent.service.impl.AvailabilityCacheManager">
+		<property name="readDao">
+			<ref bean="read.dao" />
+		</property>
+		<property name="cacheDao">
+			<ref bean="cache.dao" />
+		</property>
+		<property name="objectMapper">
+			<ref bean="object.mapper" />
+		</property>
+	</bean>
+ -->
 
 	<bean class="com.nv.platform.json.JSONMapper" id="object.mapper" />
-	
+
 
 	<bean id="sendMsg" class="com.nv.platform.sendmsg.email.SendMessageImpl">
 		<property name="templates">
