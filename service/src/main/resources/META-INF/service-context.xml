@@ -13,16 +13,33 @@
 		value="1000" /> <property name="repeatInterval" value="2000" /> </bean> -->
 	<!-- For testing simpleTrigger jobs -->
 	<!-- <bean id="myBean" class="com.nv.agent.service.impl.TestSimpleTrigger"/> -->
-
+	
+	<!-- <bean class="com.nv.agent.service.impl.TestClassAnother" id="test.class.another" />
+	<bean class="com.nv.agent.service.impl.TestClass" id="test.class" >
+		<property name="testClassAnother">
+		 	<ref bean="test.class.another" />
+		</property>
+	</bean> -->
+	
+	<bean id="availability.cache" class="com.nv.ynw.cache.availability.AvailabilityCacheManager">
+		<property name="readDao">
+			<ref bean="read.dao" />
+		</property>
+		<property name="cacheDao">
+			<ref bean="cache.dao" />
+		</property>
+		<property name="objectMapper">
+			<ref bean="object.mapper" />
+		</property>
+	</bean>
+	
 	<bean name="userAgent.cache.manager"
 		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 		<property name="jobClass"
-			value="com.nv.agent.service.impl.AvailabilityCacheManager" />
+			value="com.nv.agent.service.impl.CacheManagerAgent" />
 		<property name="jobDataMap">
 			<map>
-				<entry key="readDao" value-ref="read.dao" />
-				<entry key="cacheDao" value-ref="cache.dao" />
-				<entry key="objectMapper" value-ref="object.mapper" />
+				<entry key="availabilityCache" value-ref="availability.cache" />
 			</map>
 		</property>
 		<property name="durability" value="true" />
@@ -32,7 +49,7 @@
 	<bean id="userAgent.cache.manager.cronTrigger"
 		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="userAgent.cache.manager" />
-		<property name="cronExpression" value="0 01 16 * * ?" />
+		<property name="cronExpression" value="0 50 17 * * ?" />
 	</bean>
 
 
