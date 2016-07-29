@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+	  http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+
+	<context:annotation-config />
+
+	<bean
+		class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+
+	 <bean id="persistenceUnitManager"
+		class="org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager">
+		<property name="persistenceXmlLocations">
+			<list>
+				<value>classpath:META-INF/persistence.xml</value>
+			</list>
+		</property>
+		<property name="defaultDataSource" ref="datasource.jndi"></property>
+
+	</bean>
+
+	<bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"
+		id="jpa.dialet" />
+
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="persistenceUnitManager" ref="persistenceUnitManager" />
+		<property name="persistenceUnitName" value="ynw" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="showSql" value="true" />
+			</bean>
+		</property>
+	</bean>
+
+
+	<bean id="transaction.manager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+		<property name="dataSource" ref="datasource.jndi" />
+		<qualifier value="ynw" />
+	</bean>
+
+	<bean id="cache.persistenceUnitManager"
+		class="org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager">
+		<property name="persistenceXmlLocations">
+			<list>
+				<value>classpath:META-INF/persistence.xml</value>
+			</list>
+		</property>
+		<property name="defaultDataSource" ref="cache.datasource.jndi" />
+	</bean>
+
+	<bean id="entityManagerFactorycache"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="persistenceUnitManager" ref="cache.persistenceUnitManager" />
+		<property name="persistenceUnitName" value="cache" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="showSql" value="true" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="transaction.manager.cach" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactorycache" />
+		<property name="dataSource" ref="cache.datasource.jndi" />
+		<qualifier value="cache" />
+	</bean> 
+
+	<bean id="base.dao" class="com.nv.agent.repository.BaseDaoImpl"></bean>
+	<bean id="cache.dao" class="com.nv.agent.repository.cache.CacheDaoImpl"></bean>
+	
+	<bean id="read.dao" class="com.nv.agent.repository.ReadDaoImpl"/>
+
+	<bean id="generic.dao" class="com.nv.agent.repository.GenericDaoImpl"
+		abstract="true">
+		<property name="baseDao" ref="base.dao" />
+	</bean>
+
+
+	<tx:annotation-driven transaction-manager="transaction.manager" />
+
+
+</beans>
+  
+  
+
+  
+          

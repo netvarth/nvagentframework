@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd">
+
+	<bean id="context.config"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<!--default setting, overwritten by the content from location property -->
+
+		<property name="locations">
+			<list>
+				<!--<value>file:///${catalina.home}/conf/ynwsuperadmin.properties</value>-->
+				   <!-- <value>file:////ebs/apache-tomcat-8.0.30/conf/ynwsuperadmin.properties</value> -->
+				<value>file:///E:/Installations/apache-tomcat-8.0.30/conf/agent.properties</value>  
+
+			</list>
+		</property>
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="ignoreUnresolvablePlaceholders" value="false" />
+		<property name="searchSystemEnvironment" value="true" />
+	</bean>
+
+
+
+	<bean class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+		id="datasource.jndi">
+		<property value="com.mysql.jdbc.Driver" name="driverClassName" />
+		<property value="jdbc:mysql://localhost:3306/ynw" name="url" />
+		<property value="root" name="username" />
+		<property value="netvarth" name="password" />
+	</bean>
+	  <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+		id="cache.datasource.jndi">
+		<property value="com.mysql.jdbc.Driver" name="driverClassName" />
+		<property value="jdbc:mysql://localhost:3306/cache" name="url" />
+		<property value="root" name="username" />
+		<property value="netvarth" name="password" />
+	</bean>	
+</beans>

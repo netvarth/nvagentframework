@@ -1,0 +1,119 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+	<!-- For times when you just need to invoke a method on a specific object -->
+	<!-- <bean id="simpleJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+		<property name="targetObject" ref="myBean" /> <property name="targetMethod" 
+		value="printMessage" /> </bean> -->
+	<!-- Run the job every 2 seconds with initial delay of 1 second -->
+	<!-- <bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean"> 
+		<property name="jobDetail" ref="simpleJobDetail" /> <property name="startDelay" 
+		value="1000" /> <property name="repeatInterval" value="2000" /> </bean> -->
+	<!-- For testing simpleTrigger jobs -->
+	<!-- <bean id="myBean" class="com.nv.agent.service.impl.TestSimpleTrigger"/> -->
+
+	<bean name="cache.manager.job"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+			value="com.nv.agent.service.impl.AvailabilityCacheManager" />
+		<property name="jobDataMap">
+			<map>
+				<entry key="readDao" value-ref="read.dao" />
+				<entry key="cacheDao" value-ref="cache.dao" />
+				<entry key="objectMapper" value-ref="object.mapper" />
+			</map>
+		</property>
+		<property name="durability" value="true" />
+	</bean>
+	
+	<!-- Run the job every 2 minutes  -->
+	<bean id="cache.manager.job.cronTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="cache.manager.job" />
+		<property name="cronExpression" value="0 */2 * * * ?" />
+	</bean>
+
+
+	<bean name="user.agent"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+			value="com.nv.agent.service.impl.UserAgent2" />
+		<property name="jobDataMap">
+			<map>
+				<entry key="readDao" value-ref="read.dao" />
+				<entry key="cacheDao" value-ref="cache.dao" />
+				<entry key="objectMapper" value-ref="object.mapper" />
+			</map>
+		</property>
+		<property name="durability" value="true" />
+	</bean>
+	
+	<!-- Run the job every 2 minutes  -->
+	<bean id="user.agent.cronTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="user.agent" />
+		<property name="cronExpression" value="0 */2 * * * ?" />
+	</bean>
+
+
+
+
+
+	<!-- Scheduler factory bean to glue together jobDetails and triggers to 
+		Configure Quartz Scheduler -->
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="jobDetails">
+			<list>
+				<!-- <ref bean="simpleJobDetail" /> -->
+				<ref bean="cache.manager.job" />
+				<ref bean="user.agent" />
+			</list>
+		</property>
+
+		<property name="triggers">
+			<list>
+				<!-- <ref bean="simpleTrigger" /> -->
+				<ref bean="cache.manager.job.cronTrigger" />
+				<ref bean="user.agent.cronTrigger" />
+			</list>
+		</property>
+	</bean>
+
+
+
+
+
+	<bean class="com.nv.platform.json.JSONMapper" id="object.mapper" />
+	
+
+	<bean id="sendMsg" class="com.nv.platform.sendmsg.email.SendMessageImpl">
+		<property name="templates">
+			<list>
+				<ref bean="reportHealth.template" />
+			</list>
+		</property>
+		<property name="accessKey">
+			<value>${amazon.access.key}</value>
+		</property>
+		<property name="secretKey">
+			<value>${amazon.secret.key}</value>
+		</property>
+		<property name="mailFrom">
+			<value>${mailFrom}</value>
+		</property>
+	</bean>
+	<bean id="reportHealth.template" class="com.nv.agent.service.email.HealthEmailTemplate">
+		<property name="serverIpAddress">
+			<value>${agent.server.ip.address}</value>
+		</property>
+	</bean>
+	<!-- <bean id="health.service" class="com.nv.ynw.service.impl.YnwHealthManager" 
+		init-method="init"> <constructor-arg index="0" ref="health.dao" /> <constructor-arg 
+		index="1"> <list> <ref bean="alert.service" /> </list> </constructor-arg> 
+		<constructor-arg index="2" ref="object.mapper" /> <constructor-arg index="3" 
+		ref="sendMsg" /> <constructor-arg index="4"> <value>${support.email}</value> 
+		</constructor-arg> </bean> -->
+
+</beans>

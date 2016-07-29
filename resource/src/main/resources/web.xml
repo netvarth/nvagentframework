@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	version="3.1">
+
+
+
+
+	<description>agent</description>
+	<display-name>agent</display-name>
+	<context-param>
+		<param-name>webAppRootKey</param-name>
+		<param-value>webapp.ynwsuperadmin</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+classpath:META-INF/service-context.xml
+classpath:META-INF/appDataSource.xml
+<!-- classpath:META-INF/bl-context.xml  -->
+classpath:META-INF/persistence-context.xml
+            
+          </param-value>
+	</context-param>
+
+
+
+	<servlet>
+		<servlet-name>agent</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<!-- <init-param> <param-name>contextClass</param-name> <param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value> 
+			</init-param> -->
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>META-INF/agent-servlet.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+		<multipart-config>
+			<location>/${catalina.home}/temp</location>
+			<max-file-size>20848820</max-file-size>
+			<max-request-size>418018841</max-request-size>
+			<file-size-threshold>1048576</file-size-threshold>
+		</multipart-config>
+
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>agent</servlet-name>
+		<url-pattern>/index</url-pattern>
+
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>agent</servlet-name>
+		<url-pattern>/rest/*</url-pattern>
+	</servlet-mapping>
+
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+	<session-config>
+		<session-timeout>60</session-timeout>
+	</session-config>
+
+</web-app>

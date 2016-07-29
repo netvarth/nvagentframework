@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+
+<beans
+	xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans">
+
+      <bean id="context.config" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+<!--default setting, overwritten by the content from location property-->
+<property name="locations">
+<list>
+<value>file:///${catalina.home}/conf/agent.properties</value>
+</list>
+</property>
+<property name="ignoreResourceNotFound" value="true" />
+<property name="ignoreUnresolvablePlaceholders" value="false" />
+<property name="searchSystemEnvironment" value="true" />
+</bean>
+
+
+	<bean scope="singleton" lazy-init="true"
+		class="org.springframework.jndi.JndiObjectFactoryBean" id="datasource.jndi">
+		<property name="jndiName">
+			<value>${datasource.jndi}</value>
+		</property>
+
+	</bean>
+	<bean scope="singleton" lazy-init="true"
+		class="org.springframework.jndi.JndiObjectFactoryBean" id="cache.datasource.jndi">
+		<property name="jndiName">
+			<value>${cache.datasource.jndi}</value>
+		</property>
+
+	</bean>
+</beans>
