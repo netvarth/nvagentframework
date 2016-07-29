@@ -10,7 +10,6 @@
 		<quartz.version>2.2.1</quartz.version>
 	</properties>
   <modules>
-  	<module>api</module>
   	<module>pl</module>
   	<module>service</module>
   	<module>resource</module>

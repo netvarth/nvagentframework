@@ -7,17 +7,7 @@
   </parent>
   <artifactId>common</artifactId>
   <dependencies>
-        <dependency>
-            <groupId>com.nv.platform</groupId>
-            <artifactId>alert</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
         
-        <dependency>
-            <groupId>com.nv.platform</groupId>
-            <artifactId>auditlog</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
          <dependency>
             <groupId>com.nv.platform</groupId>
             <artifactId>nvJSON</artifactId>

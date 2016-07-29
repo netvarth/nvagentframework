@@ -32,7 +32,7 @@
 	<bean id="cache.manager.job.cronTrigger"
 		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="cache.manager.job" />
-		<property name="cronExpression" value="0 */2 * * * ?" />
+		<property name="cronExpression" value="0 45 10 * * ?" />
 	</bean>
 
 
