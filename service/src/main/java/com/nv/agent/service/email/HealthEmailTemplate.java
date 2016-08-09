@@ -17,15 +17,10 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import com.nv.platform.aaa.OAuth.AccessKey;
-import com.nv.platform.aaa.login.LoginDao;
 import com.nv.platform.base.dao.PersistenceException;
 import com.nv.platform.sendmsg.SendMsg.MailType;
 import com.nv.platform.sendmsg.SendMsgCallbackEnum;
 import com.nv.platform.sendmsg.email.EmailTemplate;
-import com.nv.ynw.account.UserType;
-import com.nv.ynw.consumer.ConsumerDao;
-import com.nv.ynw.consumer.UserProfileEntity;
 
 /**
  *

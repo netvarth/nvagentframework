@@ -51,6 +51,7 @@
 		<class>com.nv.ynw.cache.availability.ProviderScheduleCache</class>
 		<class>com.nv.ynw.cache.availability.ProviderServiceScheduleCache
 		</class>
-		<class>com.nv.ynw.cache.CacheEntity</class>
+		<class>com.nv.platform.cache.CacheEntity</class>
+		<class>com.nv.ynw.cache.maintenance.MaintenanceEntity</class>
 	</persistence-unit>
 </persistence>

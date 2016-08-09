@@ -6,24 +6,23 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.LockModeType;
 import javax.persistence.NoResultException;
-import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.springframework.transaction.annotation.Transactional;
-import com.nv.platform.base.dao.PersistenceException;
 import com.nv.platform.base.exception.ErrorStatusType;
-import com.nv.ynw.cache.CacheDao;
-import com.nv.ynw.cache.CacheException;
+import com.nv.platform.cache.CacheDao;
+import com.nv.platform.cache.CacheException;
 
 public class CacheDaoImpl implements CacheDao {
 
 	@PersistenceContext(unitName="cache")
 	private EntityManager em;
+	
 	String paramString="param";
 	
+    
 	@Transactional(value="cache",readOnly=false)
 	public <T> void  update(final T obj) throws CacheException {
 		try{em.merge(obj);
@@ -415,8 +414,8 @@ public class CacheDaoImpl implements CacheDao {
 	
 	@Transactional(value="cache",readOnly=false)
 	@Override
-	public <T> void saveAndUnlock(T obj) throws CacheException {
-		save(obj);
+	public <T> void updateAndUnlock(T obj) throws CacheException {
+		update(obj);
 		em.lock(obj, LockModeType.NONE);
 		
 	}

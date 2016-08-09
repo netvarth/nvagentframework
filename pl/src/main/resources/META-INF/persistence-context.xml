@@ -76,7 +76,7 @@
 	<bean id="cache.dao" class="com.nv.agent.repository.cache.CacheDaoImpl"></bean>
 	
 	<bean id="read.dao" class="com.nv.agent.repository.ReadDaoImpl"/>
-
+	<bean id="base.dao" class="com.nv.agent.repository.BaseDaoImpl"></bean>
 	<tx:annotation-driven transaction-manager="transaction.manager" />
 
 

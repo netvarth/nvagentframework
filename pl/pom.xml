@@ -34,12 +34,21 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>${ynw.groupId}</groupId>
+			<artifactId>api</artifactId>
+			<version>${ynw.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${nvframework.groupId}</groupId>
+			<artifactId>cache</artifactId>
+			<version>${nvframework.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-oxm</artifactId>
 			<version>${org.springframework.version}</version>
 			<scope>compile</scope>
 		</dependency>
-
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -51,12 +60,6 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.6</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.nv.youneverwait</groupId>
-			<artifactId>api</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>
@@ -70,8 +73,6 @@
 			<artifactId>spring-context-support</artifactId>
 			<version>${org.springframework.version}</version>
 		</dependency>
-
-
 
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -91,8 +92,6 @@
 			<version>${org.springframework.version}</version>
 			<scope>compile</scope>
 		</dependency>
-
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
