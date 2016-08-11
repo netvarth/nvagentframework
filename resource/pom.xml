@@ -13,7 +13,7 @@
 		<dependency>
 			<groupId>javax.websocket</groupId>
 			<artifactId>javax.websocket-api</artifactId>
-			<scope>provided</scope>
+			
 			<version>1.1</version>
 		</dependency>
 
