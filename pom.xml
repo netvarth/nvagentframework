@@ -8,6 +8,10 @@
 		<org.springframework.version>4.3.0.RELEASE</org.springframework.version>
 		<org.hibernate.version>4.3.8.Final</org.hibernate.version>
 		<quartz.version>2.2.1</quartz.version>
+		<ynw.groupId>com.nv.youneverwait</ynw.groupId>
+		<ynw.version>0.0.1-SNAPSHOT</ynw.version>
+		<nvframework.groupId>com.nv.platform</nvframework.groupId>
+		<nvframework.version>0.0.1-SNAPSHOT</nvframework.version>
 	</properties>
   <modules>
   	<module>pl</module>

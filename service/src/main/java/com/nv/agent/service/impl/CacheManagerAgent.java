@@ -8,9 +8,10 @@ import org.quartz.JobExecutionException;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import com.nv.platform.base.dao.PersistenceException;
+import com.nv.platform.cache.CacheException;
+import com.nv.platform.log.api.NVLogFormatter;
 import com.nv.platform.log.api.NVLogger;
 import com.nv.platform.log.impl.NVLoggerAPIFactory;
-import com.nv.ynw.cache.CacheException;
 import com.nv.ynw.cache.availability.AvailabilityCacheManager;
 
 /**
@@ -33,8 +34,7 @@ public class CacheManagerAgent extends QuartzJobBean{
 		try {
 			availabilityCache.trimAndExpand();
 		} catch (CacheException | PersistenceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(new NVLogFormatter("Error while cache manager trim and expand provider schedule cache", e));
 		}
 		
 	}

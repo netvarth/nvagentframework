@@ -47,36 +47,37 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.nv.youneverwait</groupId>
+			<groupId>${ynw.groupId}</groupId>
 			<artifactId>bl</artifactId>
-			<version>${project.version}</version>
+			<version>${ynw.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.nv.platform</groupId>
+			<groupId>${nvframework.groupId}</groupId>
 			<artifactId>nvJSON</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${nvframework.version}</version>
 		</dependency>
 
 		<dependency>
-			<groupId>com.nv.platform</groupId>
+			<groupId>${nvframework.groupId}</groupId>
 			<artifactId>email</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${nvframework.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.nv.platform</groupId>
+			<groupId>${nvframework.groupId}</groupId>
 			<artifactId>health</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${nvframework.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.nv.platform</groupId>
+			<groupId>${nvframework.groupId}</groupId>
 			<artifactId>logapi</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${nvframework.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
 			<version>${quartz.version}</version>
 		</dependency>
+		
 
 	</dependencies>
 </project>
