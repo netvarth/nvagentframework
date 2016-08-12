@@ -1,11 +1,11 @@
 <script type="text/javascript"> 
 var websocket; 
-var uri = 'ws://localhost:8080/sendEvent'; 
+var uri = 'ws://localhost:8080/agent'; 
 function connect() {
 	if ('WebSocket' in window) {
-		websocket = new WebSocket('ws://localhost:8080/sendEvent'); 
+		websocket = new WebSocket('ws://localhost:8080/agent'); 
 		} else if ('MozWebSocket' in window) { 
-			websocket = new MozWebSocket('ws://localhost:8080/sendEvent'); 
+			websocket = new MozWebSocket('ws://localhost:8080/agent'); 
 		} else {
 			alert('WebSocket is not supported by this browser.'); return; 
 		} 
