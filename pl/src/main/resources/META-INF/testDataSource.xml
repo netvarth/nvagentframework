@@ -9,9 +9,8 @@
 
 		<property name="locations">
 			<list>
-				<!--<value>file:///${catalina.home}/conf/ynwsuperadmin.properties</value>-->
-				   <!-- <value>file:////ebs/apache-tomcat-8.0.30/conf/ynwsuperadmin.properties</value> -->
-				<value>file:///E:/Installations/apache-tomcat-8.0.30/conf/agent.properties</value>  
+				   <value>file:////ebs/apache-tomcat-8.0.30/conf/agent.properties</value>
+				<!-- <value>file:///E:/Installations/apache-tomcat-8.0.30/conf/agent.properties</value>   -->
 
 			</list>
 		</property>
