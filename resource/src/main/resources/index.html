@@ -1,0 +1,37 @@
+<script type="text/javascript"> 
+var websocket; 
+var uri = 'ws://localhost:8080/sendEvent'; 
+function connect() {
+	if ('WebSocket' in window) {
+		websocket = new WebSocket('ws://localhost:8080/sendEvent'); 
+		} else if ('MozWebSocket' in window) { 
+			websocket = new MozWebSocket('ws://localhost:8080/sendEvent'); 
+		} else {
+			alert('WebSocket is not supported by this browser.'); return; 
+		} 
+		websocket.onopen = function() {
+			alert("Connected to server");
+			//display('Connected to server.'); 
+			}; 
+		websocket.onclose = function() { 
+			alert("DISCONNECT");
+				//display('Disconnected from server'); 
+			}; 
+		websocket.onmessage = function(event) { 
+			alert("server says :"+event.data);
+					//display('server says :'+event.data); 
+			}; 
+		}
+	function send() { 
+		var msg = document.getElementById('msg').value; display('Browser Says :'+msg); websocket.send(msg); 
+		}
+	function display(msg) { 
+		var screen = document.getElementById('screen'); var p = document.createElement('p'); p.style.wordWrap = 'break-word'; p.appendChild(document.createTextNode(msg)); screen.appendChild(p); 
+		} 
+	connect();
+</script>
+<html>
+<body>
+This is test
+</body>
+</html>
