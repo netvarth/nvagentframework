@@ -17,7 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-@ServerEndpoint("/agent")
+@ServerEndpoint("/server")
 public class AgentEndpoint {
 
 	private static final Logger log = LoggerFactory.getLogger(AgentEndpoint.class);
