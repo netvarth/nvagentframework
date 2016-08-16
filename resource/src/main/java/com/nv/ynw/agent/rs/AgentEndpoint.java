@@ -16,7 +16,8 @@ import javax.websocket.server.ServerEndpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@ServerEndpoint(value = "/agent")
+
+@ServerEndpoint("/agent")
 public class AgentEndpoint {
 
 	private static final Logger log = LoggerFactory.getLogger(AgentEndpoint.class);
