@@ -37,7 +37,7 @@
 		<property name="durability" value="true" />
 	</bean>
 
-	<!-- Fire at 2.55  PM everyday --> 
+	<!-- Fire at 2.55 PM everyday -->
 	<bean id="cache.manager.agent.cronTrigger"
 		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="cache.manager.agent" />
@@ -58,7 +58,7 @@
 		<property name="durability" value="true" />
 	</bean>
 
-<!-- Fire at 4.20  PM on 9th of every month  -->
+	<!-- Fire at 4.20 PM on 9th of every month -->
 	<bean id="login.history.purge.agent.cronTrigger"
 		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="login.history.purge.agent" />
@@ -67,8 +67,7 @@
 
 	<bean name="alert.purge.agent"
 		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-		<property name="jobClass"
-			value="com.nv.agent.service.impl.AlertPurgeAgent" />
+		<property name="jobClass" value="com.nv.agent.service.impl.AlertPurgeAgent" />
 		<property name="jobDataMap">
 			<map>
 				<entry key="readDao" value-ref="read.dao" />
@@ -78,7 +77,7 @@
 		<property name="durability" value="true" />
 	</bean>
 
-	<!-- Fire at 2.56  PM everyday -->
+	<!-- Fire at 2.56 PM everyday -->
 	<bean id="alert.purge.agent.cronTrigger"
 		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="alert.purge.agent" />
@@ -138,11 +137,22 @@
 			<value>${agent.server.ip.address}</value>
 		</property>
 	</bean>
-	<!-- <bean id="health.service" class="com.nv.ynw.service.impl.YnwHealthManager" 
-		init-method="init"> <constructor-arg index="0" ref="health.dao" /> <constructor-arg 
-		index="1"> <list> <ref bean="alert.service" /> </list> </constructor-arg> 
-		<constructor-arg index="2" ref="object.mapper" /> <constructor-arg index="3" 
-		ref="sendMsg" /> <constructor-arg index="4"> <value>${support.email}</value> 
-		</constructor-arg> </bean> -->
-
+	<bean id="email.processor" class="com.nv.agent.service.event.processors.EmailProcessor">
+		<constructor-arg index="0" ref="sendMsg" />
+		<constructor-arg index="1" ref="object.mapper" />
+	</bean>
+	<bean id="agent.event.handler" class="com.nv.agent.service.event.impl.AgentEventHandler">
+		<constructor-arg index="0">
+			<map key-type="com.nv.agent.service.event.ActionType" value-type="com.nv.agent.service.event.EventProcessor">
+				<entry key="sendEmail" value-ref="email.processor"></entry>
+			</map>
+		</constructor-arg>
+		<constructor-arg index="1" ref="base.dao" />
+		<constructor-arg index="2" ref="read.dao" />
+	</bean>
+	<!-- <bean id="agent.endpoint" class="com.nv.ynw.agent.rs.AgentEndpoint">
+		<property name="agentEventHandler">
+			<ref bean="agent.event.handler" />
+		</property>
+	</bean> -->
 </beans>

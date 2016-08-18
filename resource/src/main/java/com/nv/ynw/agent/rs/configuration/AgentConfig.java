@@ -1,37 +1,47 @@
 package com.nv.ynw.agent.rs.configuration;
 
-
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.websocket.ContainerProvider;
-import javax.websocket.DeploymentException;
-import javax.websocket.Endpoint;
-import javax.websocket.WebSocketContainer;
-import javax.websocket.server.ServerApplicationConfig;
-import javax.websocket.server.ServerContainer;
-import javax.websocket.server.ServerEndpointConfig;
-
+import com.nv.agent.service.event.impl.AgentEventHandler;
 import com.nv.ynw.agent.rs.AgentEndpoint;
 
 
-public class AgentConfig  implements ServerApplicationConfig {
+import javax.servlet.ServletContext;
+import javax.servlet.ServletRequestEvent;
+import javax.servlet.ServletRequestListener;
+import javax.websocket.server.ServerEndpointConfig;
 
-	
-	
-	 public Set<Class<?>> getAnnotatedEndpointClasses(Set<Class<?>> scanned){
-      Set<Class<?>> s = new HashSet<Class<?>>();
-       s.add(AgentEndpoint.class);
-       return s;
-	 }  
-   
-	public Set<ServerEndpointConfig> getEndpointConfigs(Set<Class<? extends Endpoint>> arg0) {
-		// TODO Auto-generated method stub
-		return null;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+
+
+public class AgentConfig  extends ServerEndpointConfig.Configurator implements ServletRequestListener  {
+	public static final AgentEndpoint agentEndpoint = new AgentEndpoint();
+	@Autowired
+	private AgentEventHandler agentEventHandler;
+
+	@Override
+	public <T> T getEndpointInstance(Class<T> endpointClass) throws InstantiationException {
+		agentEndpoint.setAgentEventHandler(agentEventHandler);
+		System.out.println("IM IN getEndpointInstance"+agentEndpoint.getAgentEventHandler());
+		return (T) agentEndpoint;
 	}
-	
+
+	public void requestInitialized(ServletRequestEvent sre) {
+		ServletContext servletContext = sre.getServletContext();
+		WebApplicationContextUtils
+		.getRequiredWebApplicationContext(servletContext)
+		.getAutowireCapableBeanFactory()
+		.autowireBean(this); 
+		System.out.println("IM IN requestInitialized");
+	}
+
+	public void requestDestroyed(ServletRequestEvent arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
 }
-	
+
+
+
 

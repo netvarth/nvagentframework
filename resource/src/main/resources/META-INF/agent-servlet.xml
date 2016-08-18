@@ -52,5 +52,9 @@ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/
 	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
 	</bean>
-	
+	<!-- <bean id="agent.endpoint" class="com.nv.ynw.agent.rs.AgentEndpoint">
+		<property name="agentEventHandler">
+			<ref bean="agent.event.handler" />
+		</property>
+	</bean> -->
 </beans>
