@@ -14,13 +14,14 @@ import javax.websocket.server.ServerEndpoint;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.socket.server.standard.SpringConfigurator;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.nv.agent.service.event.impl.AgentEventHandler;
 import com.nv.ynw.agent.rs.configuration.AgentConfig;
 
 
-@ServerEndpoint(value="/server",configurator=AgentConfig.class)
+@ServerEndpoint(value="/server",configurator = SpringConfigurator.class)
 public class AgentEndpoint {
 	private static final Logger log = LoggerFactory.getLogger(AgentEndpoint.class);
 
