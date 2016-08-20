@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.nv.ynw.agent.rs.configuration;
+package com.nv.ynw.agent.rs;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +32,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.util.Assert;
-import com.nv.ynw.agent.rs.configuration.BeanCreatingHandlerProvider;
+import com.nv.ynw.agent.rs.BeanCreatingHandlerProvider;
 
 /**
  * An implementation of {@link javax.websocket.server.ServerEndpointConfig} for use in
@@ -94,11 +94,13 @@ public class ServerEndpointRegistration extends ServerEndpointConfig.Configurato
 	 * @param endpoint the endpoint instance
 	 */
 	public ServerEndpointRegistration(String path, Endpoint endpoint) {
+		System.out.println("Im in ServerEndpointRegistration constructor starts");
 		Assert.hasText(path, "path must not be empty");
 		Assert.notNull(endpoint, "endpoint must not be null");
 		this.path = path;
 		this.endpointProvider = null;
 		this.endpoint = endpoint;
+		System.out.println("Im in ServerEndpointRegistration constructor ends");
 	}
 
 

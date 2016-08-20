@@ -8,6 +8,9 @@ public class EmailDTO implements Serializable{
 	private MailType  mailType;
 	private String emailTo;
 
+	public EmailDTO() {
+		super();
+	}
 	public EmailDTO(MailType mailType, String emailTo) {
 		super();
 		this.mailType = mailType;

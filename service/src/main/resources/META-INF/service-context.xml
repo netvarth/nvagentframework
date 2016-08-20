@@ -150,9 +150,16 @@
 		<constructor-arg index="1" ref="base.dao" />
 		<constructor-arg index="2" ref="read.dao" />
 	</bean>
-	<!-- <bean id="agent.endpoint" class="com.nv.ynw.agent.rs.AgentEndpoint">
-		<property name="agentEventHandler">
-			<ref bean="agent.event.handler" />
-		</property>
-	</bean> -->
+
+	<bean id="agent.endpoint" class="com.nv.ynw.agent.rs.AgentEndpoint">
+		<constructor-arg index="0" ref="agent.event.handler" />
+	</bean>
+
+	<bean id="agent.config" class="com.nv.ynw.agent.rs.ServerEndpointExporter" />
+
+	<bean id="server.endpoint.confg" class="com.nv.ynw.agent.rs.ServerEndpointRegistration">
+		<constructor-arg index="0" value="/server" />
+		<constructor-arg index="1" ref="agent.endpoint" />
+	</bean>
+
 </beans>

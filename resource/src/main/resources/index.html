@@ -3,14 +3,15 @@ var websocket;
 var uri = 'ws://localhost:8080/agent/server'; 
 function connect() {
 	if ('WebSocket' in window) {
-		websocket = new WebSocket('ws://localhost:8080/agent/server'); 
+		websocket = new WebSocket(uri); 
 		} else if ('MozWebSocket' in window) { 
-			websocket = new MozWebSocket('ws://localhost:8080/agent/server'); 
+			websocket = new MozWebSocket(uri); 
 		} else {
 			alert('WebSocket is not supported by this browser.'); return; 
 		} 
 		websocket.onopen = function() {
 			alert("Connected to server");
+			send();
 			//display('Connected to server.'); 
 			}; 
 		websocket.onclose = function() { 
@@ -23,15 +24,17 @@ function connect() {
 			}; 
 		}
 	function send() { 
-		var msg = document.getElementById('msg').value; display('Browser Says :'+msg); websocket.send(msg); 
+		var msg = document.getElementById('msg').value; 
+		alert("Im in sending msg="+msg);
+		websocket.send(msg); 
+		alert("aftert send");
 		}
-	function display(msg) { 
-		var screen = document.getElementById('screen'); var p = document.createElement('p'); p.style.wordWrap = 'break-word'; p.appendChild(document.createTextNode(msg)); screen.appendChild(p); 
-		} 
+	
 	connect();
 </script>
 <html>
 <body>
 This is test
+<input type="text" value="hi hello" id="msg"/>
 </body>
 </html>

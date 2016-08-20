@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.nv.ynw.agent.rs.configuration;
+package com.nv.ynw.agent.rs;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.BeanFactory;

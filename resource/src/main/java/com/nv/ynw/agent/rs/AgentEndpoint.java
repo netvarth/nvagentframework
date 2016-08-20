@@ -5,6 +5,9 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.websocket.Endpoint;
+import javax.websocket.EndpointConfig;
+import javax.websocket.MessageHandler;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
@@ -14,15 +17,15 @@ import javax.websocket.server.ServerEndpoint;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.server.standard.SpringConfigurator;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.nv.agent.service.event.impl.AgentEventHandler;
-import com.nv.ynw.agent.rs.configuration.AgentConfig;
 
 
-@ServerEndpoint(value="/server",configurator = SpringConfigurator.class)
-public class AgentEndpoint {
+
+public class AgentEndpoint extends Endpoint {
 	private static final Logger log = LoggerFactory.getLogger(AgentEndpoint.class);
 
 	private static final String GUEST_PREFIX = "Guest";
@@ -34,16 +37,54 @@ public class AgentEndpoint {
 	private Session session;
 	private AgentEventHandler agentEventHandler;
 
+	EndpointConfig config;
 
-
-
-	public AgentEndpoint() {
+	/*@Autowired*/
+	public AgentEndpoint(AgentEventHandler agentEventHandler) {
+		super();
+		this.agentEventHandler = agentEventHandler;
 		System.out.println("Agent endpoint started");
 		nickname = GUEST_PREFIX + connectionIds.getAndIncrement();
 	}
 
 
-	@OnOpen
+	
+
+	/*public AgentEndpoint() {
+		System.out.println("Agent endpoint started");
+		nickname = GUEST_PREFIX + connectionIds.getAndIncrement();
+	}*/
+
+	/*@OnMessage
+	public void handleMessage(Session session, String message) {
+		System.out.println("Im in handle message"+agentEventHandler+":"+message);
+	}*/
+
+
+
+
+	@Override
+	public void onOpen(Session session, EndpointConfig config) {
+		this.config=config;
+		
+		 session.addMessageHandler(new MessageHandler.Whole<String>() {
+
+		    //  @Override
+		      public void onMessage(String text) {
+		       
+		        	System.out.println("Im in handle message"+agentEventHandler+":"+text);
+		        	try {
+						agentEventHandler.handle(text);
+					} catch (JsonProcessingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		      }
+		  });
+		
+	}
+	
+	/*@OnOpen
 	public void start(Session session) {
 		this.session= session;
 		connections.add(this);
@@ -66,8 +107,8 @@ public class AgentEndpoint {
 		// Never trust the client
 		String filteredMessage = String.format("%s: %s",
 				nickname, message.toString());
-		
-		
+
+
 		try {
 			agentEventHandler.handle(message);
 		} catch (JsonProcessingException e) {
@@ -116,5 +157,5 @@ public class AgentEndpoint {
 	public void setAgentEventHandler(AgentEventHandler agentEventHandler) {
 		this.agentEventHandler = agentEventHandler;
 	}
-	
+	 */
 }
