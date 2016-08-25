@@ -1,51 +1,75 @@
+/**
+ * AgentEventHandler.java
+ * 
+ * @author Asha Chandran
+ */
 package com.nv.agent.service.event.impl;
-
+import java.io.IOException;
+import java.util.Date;
 import java.util.Map;
-import java.util.concurrent.Callable;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+
+import com.fasterxml.jackson.databind.JsonNode;
 import com.nv.agent.repository.BaseDao;
-import com.nv.agent.service.event.ActionType;
-import com.nv.agent.service.event.AgentEvent;
 import com.nv.agent.service.event.EventProcessor;
-import com.nv.agent.service.event.processors.EmailDTO;
+import com.nv.platform.base.dao.PersistenceException;
 import com.nv.platform.base.dao.ReadDao;
+import com.nv.platform.base.exception.ErrorStatusType;
+import com.nv.platform.event.ActionType;
+import com.nv.platform.event.EventException;
+import com.nv.platform.event.EventStatus;
+import com.nv.platform.event.NvEvent;
+import com.nv.platform.event.NvEventTaskEntity;
 import com.nv.platform.json.JSONMapper;
-import com.nv.platform.sendmsg.SendMsg.MailType;
-import com.nv.platorm.threadpool.impl.NVThreadPoolManager;
-import com.nv.platorm.threadpool.impl.TaskExecutionResult;
 
+/**
+ * This class used to get event details and its event processor
+ */
 public class AgentEventHandler {
-	private NVThreadPoolManager threadpoolService;
+
 	Map<ActionType,EventProcessor> eventProcessors ;
-	private BaseDao baseDao;
 	private ReadDao readDao;
+	private BaseDao baseDao;
+	private JSONMapper objectMapper;
 	
+	/**
+	 * 
+	 * @param eventProcessors map with key {@link ActionType} and value {@link EventProcessor}
+	 * @param readDao {@link ReadDao}
+	 * @param objectMapper {@link JSONMapper}
+	 * @param baseDao  {@link BaseDao}
+	 */
 	public AgentEventHandler( Map<ActionType, EventProcessor> eventProcessors,
-			BaseDao baseDao, ReadDao readDao) {
+			ReadDao readDao,JSONMapper objectMapper,BaseDao baseDao) {
 		super();
-		this.threadpoolService = NVThreadPoolManager.getInstance();
 		this.eventProcessors = eventProcessors;
-		this.baseDao = baseDao;
+		this.baseDao= baseDao;
 		this.readDao = readDao;
+		this.objectMapper = objectMapper;
 	}
-
-	public void handle(String eventId) throws JsonProcessingException{
-		JSONMapper objectMapper  =new JSONMapper();
-		
-		//really take from db
-		EmailDTO emailDTO = new EmailDTO(MailType.reportHealth, "asha.chandran@netvarth.com");
-		String emailDTOstr  = objectMapper.writeValueAsString(emailDTO);
-		AgentEvent agentEvent = new AgentEvent(Integer.parseInt(eventId), emailDTOstr);
-		ActionType actionType = ActionType.sendEmail;
-		
-		threadpoolService.submitTask(new Callable<TaskExecutionResult>() {
-			public TaskExecutionResult call() throws Exception {
-				eventProcessors.get(actionType).process(agentEvent);
-				return null;
-
+	/**
+	 * Get event details by given event id
+	 * @param eventId event id
+	 * @return {@link EventDetails}
+	 * @throws EventException  {@link EventException}
+	 */
+	public EventDetails getEvent(String eventId) throws EventException{
+		NvEventTaskEntity nvEventTaskEntity;
+		EventDetails eventDetails = null;
+		try {
+			nvEventTaskEntity = readDao.getById(NvEventTaskEntity.class, Integer.parseInt(eventId));
+			if(nvEventTaskEntity==null){
+				throw new EventException(ErrorStatusType.UNPROCESSABLENTITY.toString());
 			}
-		});
+			JsonNode node = objectMapper.readValue(nvEventTaskEntity.getEventDescription(), JsonNode.class);
+			NvEvent event = (NvEvent) objectMapper.readValue(node.toString(),nvEventTaskEntity.getEventClass());
+			eventDetails = new EventDetails(nvEventTaskEntity.getId(),event,eventProcessors.get(nvEventTaskEntity.getAction()));
+			nvEventTaskEntity.setModifiedDate(new Date());
+			nvEventTaskEntity.setEventStatus(EventStatus.RECEIVED);
+			baseDao.update(nvEventTaskEntity);
+		} catch (NumberFormatException | PersistenceException | IOException e) {
+			throw new EventException(ErrorStatusType.UNPROCESSABLENTITY.toString());
+		}
+		return eventDetails;
 	}
-	
 }

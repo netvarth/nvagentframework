@@ -94,13 +94,11 @@ public class ServerEndpointRegistration extends ServerEndpointConfig.Configurato
 	 * @param endpoint the endpoint instance
 	 */
 	public ServerEndpointRegistration(String path, Endpoint endpoint) {
-		System.out.println("Im in ServerEndpointRegistration constructor starts");
 		Assert.hasText(path, "path must not be empty");
 		Assert.notNull(endpoint, "endpoint must not be null");
 		this.path = path;
 		this.endpointProvider = null;
 		this.endpoint = endpoint;
-		System.out.println("Im in ServerEndpointRegistration constructor ends");
 	}
 
 

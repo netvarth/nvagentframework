@@ -22,6 +22,9 @@
 							<goal>jar</goal>
 
 						</goals>
+						<configuration>
+							<failOnError>true</failOnError>
+						</configuration>
 					</execution>
 
 				</executions>
@@ -60,6 +63,11 @@
 		<dependency>
 			<groupId>${nvframework.groupId}</groupId>
 			<artifactId>email</artifactId>
+			<version>${nvframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${nvframework.groupId}</groupId>
+			<artifactId>eventbus</artifactId>
 			<version>${nvframework.version}</version>
 		</dependency>
 		<dependency>

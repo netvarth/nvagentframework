@@ -1,12 +1,19 @@
 /**
- * 
+ *  EventProcessor.java
+ *  @author Asha Chandran
  */
 package com.nv.agent.service.event;
 
-/**
- * @author Asha Chandran
- *
- */
+import com.nv.platform.event.EventException;
+import com.nv.platform.event.NvEvent;
+
 public interface EventProcessor {
-	public void process(AgentEvent event);
+	
+	/**
+	 * Process an event
+	 * @param event {@link NvEvent}
+	 * @param eventId event id
+	 * @throws EventException {@link EventException}
+	 */
+	public void process(NvEvent event,int eventId) throws EventException;
 }

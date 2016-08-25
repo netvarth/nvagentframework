@@ -6,20 +6,22 @@
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
-			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<!-- <property name="hibernate.hbm2ddl.auto" value="update" /> -->
 			<generator class="identity" />
+
 		</properties>
 
 		<class>com.nv.platform.alert.AlertEntity</class>
 		<class>com.nv.ynw.common.configuration.SystemConfiguration</class>
 		<class>com.nv.platform.base.account.Account</class>
 		<class>com.nv.platform.base.user.User</class>
-		<class>com.nv.platform.aaa.login.LoginEntity</class>
-		<class>com.nv.ynw.provider.ProviderEntity</class>
-		<class>com.nv.ynw.account.AccountProfileEntity</class>
-		<class>com.nv.ynw.consumer.ConsumerEntity</class>
+ 		<class>com.nv.platform.aaa.login.LoginEntity</class>
 		<class>com.nv.ynw.consumer.UserProfileEntity</class>
 		<class>com.nv.platform.aaa.OAuth.AccessKey</class>
+		<class>com.nv.ynw.account.AccountProfileEntity</class>
+		
+		<class>com.nv.ynw.provider.ProviderEntity</class>
+		<class>com.nv.ynw.consumer.ConsumerEntity</class>
 		<class>com.nv.platform.sendmsg.PendingMessageEntity</class>
 		<class>com.nv.platform.auditlog.AuditLogEntity</class>
 		<class>com.nv.platform.health.HealthMonitorEntity</class>
@@ -31,10 +33,19 @@
 		<class>com.nv.platform.aaa.login.LoginHistoryEntity</class>
 		<class>com.nv.ynw.account.consumer.AccountCustomerEntity</class>
 		<class>com.nv.ynw.account.holidays.HolidaysEntity</class>
-		<class>com.nv.ynw.consumer.label.LabelEntity</class>
+		<class>com.nv.ynw.account.labels.LabelEntity</class>
 		<class>com.nv.ynw.consumer.label.ConsumerLabelEntity</class>
 		<class>com.nv.ynw.service.ServiceLocationEntity</class>
 		<class>com.nv.ynw.discount.AccountDiscountEntity</class>
+		<class>com.nv.ynw.account.gallery.GalleryEntity</class>
+		<class>com.nv.ynw.appt.AppointmentEntity</class>
+
+		<class>com.nv.ynw.waitlist.WaitlistEntity</class>
+		<class>com.nv.ynw.waitlist.ProviderInternalNoteEntity</class>
+		<class>com.nv.ynw.waitlist.ServiceDelayEntity</class>
+		
+		<class>com.nv.platform.event.NvEventTaskEntity</class>
+		
 	</persistence-unit>
 
 	<persistence-unit name="cache">
@@ -46,11 +57,9 @@
 			<property name="javax.persistence.lock.timeout" value="1000" />
 		</properties>
 
-
 		<class>com.nv.ynw.cache.account.AccountCache</class>
 		<class>com.nv.ynw.cache.availability.ProviderScheduleCache</class>
-		<class>com.nv.ynw.cache.availability.ProviderServiceScheduleCache
-		</class>
+		<class>com.nv.ynw.cache.availability.ProviderServiceScheduleCache</class>
 		<class>com.nv.platform.cache.CacheEntity</class>
 		<class>com.nv.ynw.cache.maintenance.MaintenanceEntity</class>
 	</persistence-unit>

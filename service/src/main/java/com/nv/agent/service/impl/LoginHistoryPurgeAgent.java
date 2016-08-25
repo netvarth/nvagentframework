@@ -19,7 +19,6 @@ import com.nv.agent.repository.BaseDao;
 
 /**
  * This agent will do the task of purging old entries of login history
- * @author Asha
  */
 public class LoginHistoryPurgeAgent extends QuartzJobBean{
 	NVLogger logger = NVLoggerAPIFactory.getLogger(LoginHistoryPurgeAgent.class);
@@ -30,7 +29,7 @@ public class LoginHistoryPurgeAgent extends QuartzJobBean{
 	private static final String get_old_login_history= "select history.id from LoginHistoryEntity as history where history.loggedIn<=:param1";
 	@Override
 	protected void executeInternal(JobExecutionContext arg0) throws JobExecutionException {
-		System.out.println("In agent --LoginHistoryPurgeAgent"+new Date());
+		logger.info("Login history purging agent executing at "+new Date());
 		try {
 			List<Integer> loginHistoryIds = readDao.executeQuery(Integer.class, get_old_login_history, DateUtil.getStartDateOfThisMonth());
 			for (Integer historyId : loginHistoryIds) {
@@ -42,11 +41,17 @@ public class LoginHistoryPurgeAgent extends QuartzJobBean{
 		
 
 	}
+	/**
+	 * @param readDao the readDao to set
+	 */
 	public void setReadDao(ReadDao readDao) {
 		this.readDao = readDao;
 	}
+	/**
+	 * @param baseDao the baseDao to set
+	 */
 	public void setBaseDao(BaseDao baseDao) {
 		this.baseDao = baseDao;
 	}
-
+	
 }
