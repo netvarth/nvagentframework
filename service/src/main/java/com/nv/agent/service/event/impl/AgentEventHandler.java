@@ -10,10 +10,10 @@ import java.util.Map;
 
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.nv.agent.repository.BaseDao;
 import com.nv.agent.service.event.EventProcessor;
 import com.nv.platform.base.dao.PersistenceException;
 import com.nv.platform.base.dao.ReadDao;
+import com.nv.platform.base.dao.WriteDao;
 import com.nv.platform.base.exception.ErrorStatusType;
 import com.nv.platform.event.ActionType;
 import com.nv.platform.event.EventException;
@@ -29,7 +29,7 @@ public class AgentEventHandler {
 
 	Map<ActionType,EventProcessor> eventProcessors ;
 	private ReadDao readDao;
-	private BaseDao baseDao;
+	private WriteDao writeDao;
 	private JSONMapper objectMapper;
 	
 	/**
@@ -37,13 +37,13 @@ public class AgentEventHandler {
 	 * @param eventProcessors map with key {@link ActionType} and value {@link EventProcessor}
 	 * @param readDao {@link ReadDao}
 	 * @param objectMapper {@link JSONMapper}
-	 * @param baseDao  {@link BaseDao}
+	 * @param writeDao  {@link WriteDao}
 	 */
 	public AgentEventHandler( Map<ActionType, EventProcessor> eventProcessors,
-			ReadDao readDao,JSONMapper objectMapper,BaseDao baseDao) {
+			ReadDao readDao,JSONMapper objectMapper,WriteDao writeDao) {
 		super();
 		this.eventProcessors = eventProcessors;
-		this.baseDao= baseDao;
+		this.writeDao= writeDao;
 		this.readDao = readDao;
 		this.objectMapper = objectMapper;
 	}
@@ -66,7 +66,7 @@ public class AgentEventHandler {
 			eventDetails = new EventDetails(nvEventTaskEntity.getId(),event,eventProcessors.get(nvEventTaskEntity.getAction()));
 			nvEventTaskEntity.setModifiedDate(new Date());
 			nvEventTaskEntity.setEventStatus(EventStatus.RECEIVED);
-			baseDao.update(nvEventTaskEntity);
+			writeDao.update(nvEventTaskEntity);
 		} catch (NumberFormatException | PersistenceException | IOException e) {
 			throw new EventException(ErrorStatusType.UNPROCESSABLENTITY.toString());
 		}

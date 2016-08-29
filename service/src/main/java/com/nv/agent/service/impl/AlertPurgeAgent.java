@@ -16,11 +16,11 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 import com.nv.platform.alert.AlertEntity;
 import com.nv.platform.base.dao.PersistenceException;
 import com.nv.platform.base.dao.ReadDao;
+import com.nv.platform.base.dao.WriteDao;
 import com.nv.platform.base.util.DateUtil;
 import com.nv.platform.log.api.NVLogFormatter;
 import com.nv.platform.log.api.NVLogger;
 import com.nv.platform.log.impl.NVLoggerAPIFactory;
-import com.nv.agent.repository.BaseDao;
 
 /**
  * This agent will do the task of purging old entries of alerts
@@ -29,7 +29,7 @@ public class AlertPurgeAgent extends QuartzJobBean{
 	NVLogger logger = NVLoggerAPIFactory.getLogger(AlertPurgeAgent.class);
 
 	private ReadDao readDao;
-	private BaseDao baseDao;
+	private WriteDao writeDao;
 	
 	private static final String get_old_alerts= "select alert.id from AlertEntity as alert where alert.endDate<:param1";
 	
@@ -43,7 +43,7 @@ public class AlertPurgeAgent extends QuartzJobBean{
 		try {
 			List<Integer> ids = readDao.executeQuery(Integer.class, get_old_alerts, DateUtil.getCurrentDateWithoutTime());
 			for (Integer id : ids) {
-				baseDao.deleteWithId(AlertEntity.class, id);
+				writeDao.delete(AlertEntity.class, id);
 			}
 		} catch (PersistenceException e) {
 			logger.error(new NVLogFormatter("Error while purging old entries of alerts", e));
@@ -58,9 +58,9 @@ public class AlertPurgeAgent extends QuartzJobBean{
 	}
 
 	/**
-	 * @param baseDao the baseDao to set
+	 * @param writeDao the writeDao to set
 	 */
-	public void setBaseDao(BaseDao baseDao) {
-		this.baseDao = baseDao;
+	public void setWriteDao(WriteDao writeDao) {
+		this.writeDao = writeDao;
 	}
 }

@@ -26,10 +26,11 @@
 
 	</bean>
 	<bean scope="singleton" lazy-init="true"
-		class="org.springframework.jndi.JndiObjectFactoryBean" id="cache.datasource.jndi">
+		class="org.springframework.jndi.JndiObjectFactoryBean" id="read.datasource.jndi">
 		<property name="jndiName">
-			<value>${cache.datasource.jndi}</value>
+			<value>${read.datasource.jndi}</value>
 		</property>
 
 	</bean>
+
 </beans>

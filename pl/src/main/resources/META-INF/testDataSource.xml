@@ -29,9 +29,9 @@
 		<property value="netvarth" name="password" />
 	</bean>
 	  <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource"
-		id="cache.datasource.jndi">
+		id="read.datasource.jndi">
 		<property value="com.mysql.jdbc.Driver" name="driverClassName" />
-		<property value="jdbc:mysql://localhost:3306/cache" name="url" />
+		<property value="jdbc:mysql://localhost:3306/ynw" name="url" />
 		<property value="root" name="username" />
 		<property value="netvarth" name="password" />
 	</bean>	

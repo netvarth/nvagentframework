@@ -19,8 +19,8 @@ import com.nv.platform.event.EventStatus;
 import com.nv.platform.log.api.NVLogFormatter;
 import com.nv.platform.log.api.NVLogger;
 import com.nv.platform.log.impl.NVLoggerAPIFactory;
-import com.nv.platorm.threadpool.impl.NVThreadPoolManager;
-import com.nv.platorm.threadpool.impl.TaskExecutionResult;
+import com.nv.platform.threadpool.impl.NVThreadPoolManager;
+import com.nv.platform.threadpool.impl.TaskExecutionResult;
 
 import java.util.concurrent.Callable;
 

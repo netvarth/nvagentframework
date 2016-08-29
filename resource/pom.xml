@@ -36,6 +36,11 @@
 			<artifactId>ui</artifactId>
 			<version>${ynw.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>${nvframework.groupId}</groupId>
+			<artifactId>threadpool</artifactId>
+			<version>${nvframework.version}</version>
+		</dependency>
 	</dependencies>
 	
 	<build>

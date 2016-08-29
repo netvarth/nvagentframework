@@ -8,10 +8,9 @@ package com.nv.agent.service.event.processors;
 import java.io.IOException;
 import java.util.Date;
 
-import com.nv.agent.repository.BaseDao;
 import com.nv.agent.service.event.EventProcessor;
-import com.nv.agent.service.event.impl.AgentEventHandler;
 import com.nv.platform.base.dao.PersistenceException;
+import com.nv.platform.base.dao.WriteDao;
 import com.nv.platform.event.EventStatus;
 import com.nv.platform.event.NvEvent;
 import com.nv.platform.event.NvEventTaskEntity;
@@ -29,16 +28,16 @@ import com.nv.ynw.account.SignupEvent;
 public class EmailEventProcessor implements EventProcessor{
 	private static final NVLogger logger = NVLoggerAPIFactory.getLogger(EmailEventProcessor.class);
 	private SendMsg sendMsg;
-	private BaseDao baseDao;
+	private WriteDao writeDao;
 	/**
 	 * Constructor 
 	 * @param sendMsg {@link SendMsg}
-	 * @param baseDao {@link BaseDao}
+	 * @param writeDao {@link WriteDao}
 	 */
-	public EmailEventProcessor(SendMsg sendMsg,BaseDao baseDao) {
+	public EmailEventProcessor(SendMsg sendMsg,WriteDao writeDao) {
 		super();
 		this.sendMsg = sendMsg;
-		this.baseDao = baseDao;
+		this.writeDao = writeDao;
 	}
 	/**
 	 * Process event for email sending
@@ -64,10 +63,10 @@ public class EmailEventProcessor implements EventProcessor{
 	 */
 	private void updateSuccessEvent(int eventId){
 		try {
-			NvEventTaskEntity nvEventTaskEntity = baseDao.getById(NvEventTaskEntity.class, eventId);
+			NvEventTaskEntity nvEventTaskEntity = writeDao.getById(NvEventTaskEntity.class, eventId);
 			nvEventTaskEntity.setModifiedDate(new Date());
 			nvEventTaskEntity.setEventStatus(EventStatus.SUCCESS);
-			baseDao.update(nvEventTaskEntity);
+			writeDao.update(nvEventTaskEntity);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			logger.error(new NVLogFormatter("Error while saving SUCCESS status in email event processor  ",e));
@@ -80,10 +79,10 @@ public class EmailEventProcessor implements EventProcessor{
 	 */
 	private void updateFailureEvent(int eventId){
 		try {
-			NvEventTaskEntity nvEventTaskEntity = baseDao.getById(NvEventTaskEntity.class, eventId);
+			NvEventTaskEntity nvEventTaskEntity = writeDao.getById(NvEventTaskEntity.class, eventId);
 			nvEventTaskEntity.setModifiedDate(new Date());
 			nvEventTaskEntity.setEventStatus(EventStatus.FAILURE);
-			baseDao.update(nvEventTaskEntity);
+			writeDao.update(nvEventTaskEntity);
 		} catch (PersistenceException e) {
 			logger.error(new NVLogFormatter("Error while saving FAILURE status in email event processor",e));
 		}
