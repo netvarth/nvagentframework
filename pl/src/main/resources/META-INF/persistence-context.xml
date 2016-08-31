@@ -54,7 +54,7 @@
 				<value>classpath:META-INF/persistence.xml</value>
 			</list>
 		</property>
-		<property name="defaultDataSource" ref="datasource.jndi" />
+		<property name="defaultDataSource" ref="read.datasource.jndi" />
 	</bean>
 
 	<bean id="entityManagerFactoryread"
