@@ -40,7 +40,7 @@ public class ReadDaoImpl implements ReadDao{
 	 * @return T object of T
 	 * @throws PersistenceException persistenceException
 	 */
-	@Transactional(value="write",readOnly=true,propagation=Propagation.REQUIRED)
+	@Transactional(value="read",readOnly=true,propagation=Propagation.REQUIRED)
 	public <T> T getById(Class<T> a, int id) throws PersistenceException {			
 		try{
 			T obj=em.find(a, id);
@@ -64,7 +64,7 @@ public class ReadDaoImpl implements ReadDao{
 
 	}	
 	
-	@Transactional(value="write",readOnly=true,propagation=Propagation.REQUIRED)
+	@Transactional(value="read",readOnly=true,propagation=Propagation.REQUIRED)
 	public <T> T getByObjectId(Class<T> a, Object id) throws PersistenceException {			
 		try{
 			T obj=em.find(a, id);
@@ -94,7 +94,7 @@ public class ReadDaoImpl implements ReadDao{
 	 * @return T  object of T
 	 * @throws PersistenceException persistenceException
 	 */
-	@Transactional(value="write",readOnly=true,propagation=Propagation.REQUIRED)
+	@Transactional(value="read",readOnly=true,propagation=Propagation.REQUIRED)
 	public <T> T getByUid(Class<T> className, int uid) throws PersistenceException {
 		try{
 			Query query=em.createQuery("from "+className.getName()+" as obj where obj.uid=:uid");
@@ -121,7 +121,7 @@ public class ReadDaoImpl implements ReadDao{
 	}
 
 
-	@Transactional(value="write",readOnly=true,propagation=Propagation.REQUIRED)
+	@Transactional(value="read",readOnly=true,propagation=Propagation.REQUIRED)
 	public <T> T getByUid(Class<T> className, String uid) throws PersistenceException {
 		try{
 			Query query=em.createQuery("from "+className.getName()+" as obj where obj.uid=:uid");
@@ -160,7 +160,7 @@ public class ReadDaoImpl implements ReadDao{
 	 * @throws PersistenceException persistenceException
 	 */
 	
-	@Transactional(value="write",readOnly=true,propagation=Propagation.REQUIRED)
+	@Transactional(value="read",readOnly=true,propagation=Propagation.REQUIRED)
 	public <T> T getById(Class<T> a, String str) throws PersistenceException {
 		try{
 			T obj=em.find(a, str);
@@ -195,7 +195,7 @@ public class ReadDaoImpl implements ReadDao{
 	 * @throws PersistenceException persistenceException
 	 */
 
-	@Transactional(value="write",readOnly=true,propagation=Propagation.REQUIRED)
+	@Transactional(value="read",readOnly=true,propagation=Propagation.REQUIRED)
 	public <T> List<T> loadAll(Class<T> className)throws PersistenceException{
 		List<T>  response=null;
 		try{
@@ -230,7 +230,7 @@ public class ReadDaoImpl implements ReadDao{
 	
 
 	@Override
-	@Transactional(value="write",readOnly=true,propagation=Propagation.REQUIRED)
+	@Transactional(value="read",readOnly=true,propagation=Propagation.REQUIRED)
 	public <T> List<T> executeQuery(Class<T> clazz, String queryString,  int[] limits, Object ...params) throws PersistenceException {
 		Query query = em.createQuery(queryString);
 		int count=1;
@@ -267,7 +267,7 @@ public class ReadDaoImpl implements ReadDao{
 
 	
 	@Override
-	@Transactional(value="write",readOnly=true,propagation=Propagation.REQUIRED)
+	@Transactional(value="read",readOnly=true,propagation=Propagation.REQUIRED)
 	public <T> List<T> executeQuery(Class<T> clazz, String queryString,  int[] limits) throws PersistenceException {
 		Query query = em.createQuery(queryString);
 		query.setFirstResult(limits[0]);
@@ -303,7 +303,7 @@ public class ReadDaoImpl implements ReadDao{
 	 * @see com.nv.ynw.repository.BaseDao#executeQuery(java.lang.Class, java.lang.String)
 	 */
 	@Override
-	@Transactional(value="write",readOnly=true,propagation=Propagation.REQUIRED)
+	@Transactional(value="read",readOnly=true,propagation=Propagation.REQUIRED)
 	public <T> List<T> executeQuery(Class<T> clazz, String queryString,Object ...params) throws PersistenceException {
 		TypedQuery<T> query = em.createQuery(queryString,clazz);
 		int count=1;
@@ -340,7 +340,7 @@ public class ReadDaoImpl implements ReadDao{
 	
 
 	@Override
-	@Transactional(value="write",readOnly=true,propagation=Propagation.REQUIRED)
+	@Transactional(value="read",readOnly=true,propagation=Propagation.REQUIRED)
 	public <T> T executeUniqueQuery(Class<T> clazz, String queryString,Object ...params) throws PersistenceException {
 		TypedQuery<T> query = em.createQuery(queryString,clazz);
 		int count=1;

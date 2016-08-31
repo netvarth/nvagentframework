@@ -7,6 +7,7 @@ package com.nv.ynw.agent.rs;
 
 import java.io.IOException;
 
+import javax.websocket.CloseReason;
 import javax.websocket.Endpoint;
 import javax.websocket.EndpointConfig;
 import javax.websocket.MessageHandler;
@@ -27,7 +28,6 @@ import java.util.concurrent.Callable;
 public class AgentEndpoint extends Endpoint {
 	private static final NVLogger logger = NVLoggerAPIFactory.getLogger(AgentEndpoint.class);
 	private NVThreadPoolManager threadpoolService;
-	private Session session;
 	private AgentEventHandler agentEventHandler;
 	EndpointConfig config;
 
@@ -41,6 +41,12 @@ public class AgentEndpoint extends Endpoint {
 		this.threadpoolService = NVThreadPoolManager.getInstance();
 		System.out.println("Agent endpoint started");
 	}
+	
+	@Override
+	public void onClose(Session session, CloseReason closeReason) {
+		
+	}
+	
 	/**
 	 * Open session
 	 * @param session {@link  Session}
@@ -49,7 +55,6 @@ public class AgentEndpoint extends Endpoint {
 	@Override
 	public void onOpen(final Session session, EndpointConfig config) {
 		this.config=config;
-		this.session=session;
 		session.addMessageHandler(new MessageHandler.Whole<String>() {
 
 			public void onMessage(String text) {

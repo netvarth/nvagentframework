@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
 
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.nv.agent.service.event.EventProcessor;
@@ -53,6 +54,7 @@ public class AgentEventHandler {
 	 * @return {@link EventDetails}
 	 * @throws EventException  {@link EventException}
 	 */
+	@Transactional(value="write",readOnly=false)
 	public EventDetails getEvent(String eventId) throws EventException{
 		NvEventTaskEntity nvEventTaskEntity;
 		EventDetails eventDetails = null;
@@ -67,7 +69,8 @@ public class AgentEventHandler {
 			nvEventTaskEntity.setModifiedDate(new Date());
 			nvEventTaskEntity.setEventStatus(EventStatus.RECEIVED);
 			writeDao.update(nvEventTaskEntity);
-		} catch (NumberFormatException | PersistenceException | IOException e) {
+		} catch (Exception e) {
+			e.printStackTrace();
 			throw new EventException(ErrorStatusType.UNPROCESSABLENTITY.toString());
 		}
 		return eventDetails;
