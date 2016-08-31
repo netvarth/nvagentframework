@@ -75,4 +75,21 @@ public class AgentEventHandler {
 		}
 		return eventDetails;
 	}
+	
+	@Transactional(value="read",readOnly=true)
+	public EventDetails getEvent(int eventId) throws EventException{
+		NvEventTaskEntity nvEventTaskEntity;
+		EventDetails eventDetails = null;
+		try {
+			nvEventTaskEntity = readDao.getById(NvEventTaskEntity.class, eventId);
+			if(nvEventTaskEntity==null){
+				throw new EventException(ErrorStatusType.UNPROCESSABLENTITY.toString());
+			}
+			System.out.println("nvEventTaskEntity getEventDescription"+nvEventTaskEntity.getEventDescription());
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new EventException(ErrorStatusType.UNPROCESSABLENTITY.toString());
+		}
+		return eventDetails;
+	}
 }

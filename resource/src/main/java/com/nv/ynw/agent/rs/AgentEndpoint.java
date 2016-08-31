@@ -59,9 +59,11 @@ public class AgentEndpoint extends Endpoint {
 
 			public void onMessage(String text) {
 				try {
+					EventDetails eventdetails1 = agentEventHandler.getEvent(1);
 					//get event details from event tbl by event id given by client
 					final EventDetails eventdetails = agentEventHandler.getEvent(text);
-
+					EventDetails eventdetails3 = agentEventHandler.getEvent(1);
+					EventDetails eventdetails4 = agentEventHandler.getEvent(text);
 					//Submit event processor task to thread 
 					threadpoolService.submitTask(new Callable<TaskExecutionResult>() {
 						public TaskExecutionResult call() throws Exception {

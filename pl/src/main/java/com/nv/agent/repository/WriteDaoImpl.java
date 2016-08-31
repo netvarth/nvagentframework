@@ -43,7 +43,7 @@ public  class WriteDaoImpl implements WriteDao{
 	 * @return T object of T
 	 * @throws PersistenceException persistenceException
 	 */
-	@Transactional(value="write",readOnly=true)
+//	@Transactional(value="write",readOnly=true)
 	public <T> T getById(Class<T> a, Object id) throws PersistenceException {			
 		try{
 			T obj=em.find(a, id);
@@ -70,7 +70,7 @@ public  class WriteDaoImpl implements WriteDao{
 
 
 
-	@Transactional(value="write",readOnly=false)
+//	@Transactional(value="write",readOnly=false)
 
 	public <T> void  update(final T obj) throws PersistenceException {
 
@@ -105,7 +105,7 @@ public  class WriteDaoImpl implements WriteDao{
 	 * @throws PersistenceException persistenceException
 	 */
 
-	@Transactional(value="write",readOnly=false)
+	//@Transactional(value="write",readOnly=false)
 	public <T> void save(T obj) throws PersistenceException {
 
 
@@ -132,7 +132,7 @@ public  class WriteDaoImpl implements WriteDao{
 	 * @return T  object of T
 	 * @throws PersistenceException persistenceException
 	 */
-	@Transactional(value="write",readOnly=false)
+//	@Transactional(value="write",readOnly=false)
 	public <T> T getByUid(Class<T> className, Object uid) throws PersistenceException {
 		try{
 
@@ -177,7 +177,7 @@ public  class WriteDaoImpl implements WriteDao{
 	 * @see com.nv.platform.base.dao.BaseDao#deleteWithId(int)
 	 */
 	@Override
-	@Transactional(value="write",readOnly=false)
+//	@Transactional(value="write",readOnly=false)
 	public <T> void delete(Class<T> clazz,Object id) throws PersistenceException {
 
 

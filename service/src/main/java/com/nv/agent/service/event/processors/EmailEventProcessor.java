@@ -8,6 +8,8 @@ package com.nv.agent.service.event.processors;
 import java.io.IOException;
 import java.util.Date;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.nv.agent.service.event.EventProcessor;
 import com.nv.platform.base.dao.PersistenceException;
 import com.nv.platform.base.dao.WriteDao;
@@ -44,6 +46,7 @@ public class EmailEventProcessor implements EventProcessor{
 	 * @param event {@link NvEvent}
 	 * @param  eventId event id
 	 */
+	@Transactional(value="write",readOnly=false)
 	public void process(NvEvent event,int eventId){
 		if(event.getClass().isAssignableFrom(SignupEvent.class)){
 			SignupEvent signupEvent = (SignupEvent)event;
