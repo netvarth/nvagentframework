@@ -3,7 +3,7 @@
  * 
  * @author Asha
  */
-package com.nv.agent.service.impl;
+package com.nv.agent.service.useragents;
 
 
 import java.util.Date;
@@ -12,6 +12,7 @@ import java.util.List;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.scheduling.quartz.QuartzJobBean;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.nv.platform.alert.AlertEntity;
 import com.nv.platform.base.dao.PersistenceException;
@@ -25,8 +26,8 @@ import com.nv.platform.log.impl.NVLoggerAPIFactory;
 /**
  * This agent will do the task of purging old entries of alerts
  */
-public class AlertPurgeAgent extends QuartzJobBean{
-	NVLogger logger = NVLoggerAPIFactory.getLogger(AlertPurgeAgent.class);
+public class AlertUserAgent extends QuartzJobBean{
+	NVLogger logger = NVLoggerAPIFactory.getLogger(AlertUserAgent.class);
 
 	private ReadDao readDao;
 	private WriteDao writeDao;
@@ -38,6 +39,7 @@ public class AlertPurgeAgent extends QuartzJobBean{
 	 * @param arg0 {@link JobExecutionContext}
 	 */
 	@Override
+	@Transactional(value="write")
 	protected void executeInternal(JobExecutionContext arg0) throws JobExecutionException {
 		logger.info("Alert purging agent executing at "+new Date());
 		try {

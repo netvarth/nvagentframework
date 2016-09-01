@@ -3,16 +3,13 @@
  * 
  * @author Asha Chandran
  */
-package com.nv.agent.service.event.impl;
-import java.io.IOException;
+package com.nv.agent.service.event;
 import java.util.Date;
 import java.util.Map;
 
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.nv.agent.service.event.EventProcessor;
-import com.nv.platform.base.dao.PersistenceException;
 import com.nv.platform.base.dao.ReadDao;
 import com.nv.platform.base.dao.WriteDao;
 import com.nv.platform.base.exception.ErrorStatusType;

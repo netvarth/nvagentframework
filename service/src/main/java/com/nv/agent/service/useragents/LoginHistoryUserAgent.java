@@ -1,4 +1,4 @@
-package com.nv.agent.service.impl;
+package com.nv.agent.service.useragents;
 
 
 import java.util.Date;
@@ -7,6 +7,7 @@ import java.util.List;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.scheduling.quartz.QuartzJobBean;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.nv.platform.aaa.login.LoginHistoryEntity;
 import com.nv.platform.base.dao.PersistenceException;
@@ -20,14 +21,16 @@ import com.nv.platform.log.impl.NVLoggerAPIFactory;
 /**
  * This agent will do the task of purging old entries of login history
  */
-public class LoginHistoryPurgeAgent extends QuartzJobBean{
-	NVLogger logger = NVLoggerAPIFactory.getLogger(LoginHistoryPurgeAgent.class);
+public class LoginHistoryUserAgent extends QuartzJobBean{
+	NVLogger logger = NVLoggerAPIFactory.getLogger(LoginHistoryUserAgent.class);
 
 	private ReadDao readDao;
 	private WriteDao writeDao;
 	
 	private static final String get_old_login_history= "select history.id from LoginHistoryEntity as history where history.loggedIn<=:param1";
+	
 	@Override
+	@Transactional(value="write")
 	protected void executeInternal(JobExecutionContext arg0) throws JobExecutionException {
 		logger.info("Login history purging agent executing at "+new Date());
 		try {

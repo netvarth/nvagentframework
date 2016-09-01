@@ -17,7 +17,7 @@
 	<bean name="login.history.purge.agent"
 		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 		<property name="jobClass"
-			value="com.nv.agent.service.impl.LoginHistoryPurgeAgent" />
+			value="com.nv.agent.service.useragents.LoginHistoryUserAgent" />
 		<property name="jobDataMap">
 			<map>
 				<entry key="readDao" value-ref="read.dao" />
@@ -36,7 +36,7 @@
 
 	<bean name="alert.purge.agent"
 		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-		<property name="jobClass" value="com.nv.agent.service.impl.AlertPurgeAgent" />
+		<property name="jobClass" value="com.nv.agent.service.useragents.AlertUserAgent" />
 		<property name="jobDataMap">
 			<map>
 				<entry key="readDao" value-ref="read.dao" />
@@ -54,7 +54,23 @@
 	</bean>
 	
 	
-	
+	<bean name="waitlist.manage.agent"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="com.nv.agent.service.useragents.WaitlistUserAgent" />
+		<property name="jobDataMap">
+			<map>
+				<entry key="writeDao" value-ref="write.dao" />
+			</map>
+		</property>
+		<property name="durability" value="true" />
+	</bean>
+
+	<!-- Fire at every 2 minutes everyday -->
+	<bean id="waitlist.manage.agent.cronTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="waitlist.manage.agent" />
+		<property name="cronExpression" value="0 */3 * * * ?" />
+	</bean>
 	
 
 
@@ -67,6 +83,7 @@
 				
 				<ref bean="login.history.purge.agent" />
 				<ref bean="alert.purge.agent" />
+				<ref bean="waitlist.manage.agent" />
 				<!-- test starts-->
 				<!-- <ref bean="test1" />
 				<ref bean="test2" />
@@ -90,6 +107,7 @@
 				
 				<ref bean="login.history.purge.agent.cronTrigger" />
 				<ref bean="alert.purge.agent.cronTrigger" />
+				<ref bean="waitlist.manage.agent.cronTrigger" />
 				<!-- test starts-->
 				<!-- <ref bean="test1.cronTrigger" />
 				<ref bean="test2.cronTrigger" />
@@ -143,7 +161,7 @@
 		<constructor-arg index="0" ref="sendMsg" />
 		<constructor-arg index="1" ref="write.dao" />
 	</bean>
-	<bean id="agent.event.handler" class="com.nv.agent.service.event.impl.AgentEventHandler">
+	<bean id="agent.event.handler" class="com.nv.agent.service.event.AgentEventHandler">
 		<constructor-arg index="0">
 			<map key-type="com.nv.platform.event.ActionType" value-type="com.nv.agent.service.event.EventProcessor">
 				<entry key="SEND_MAIL" value-ref="email.processor"></entry>

@@ -1,9 +1,8 @@
 /**
  * 
  */
-package com.nv.agent.service.event.impl;
+package com.nv.agent.service.event;
 
-import com.nv.agent.service.event.EventProcessor;
 import com.nv.platform.event.ActionType;
 import com.nv.platform.event.NvEvent;
 

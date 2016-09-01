@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.IdClass;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -13,6 +14,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.EntityType;
 
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nv.platform.base.BasePlatformConstants;
@@ -35,7 +37,6 @@ public  class WriteDaoImpl implements WriteDao{
 	@PersistenceContext(unitName="ynw")
 	private EntityManager em;
 
-
 	/**
 	 * 
 	 * @param a iput class name
@@ -43,7 +44,7 @@ public  class WriteDaoImpl implements WriteDao{
 	 * @return T object of T
 	 * @throws PersistenceException persistenceException
 	 */
-//	@Transactional(value="write",readOnly=true)
+	@Transactional(readOnly=true,propagation=Propagation.REQUIRED)
 	public <T> T getById(Class<T> a, Object id) throws PersistenceException {			
 		try{
 			T obj=em.find(a, id);
@@ -67,11 +68,7 @@ public  class WriteDaoImpl implements WriteDao{
 
 	}	
 
-
-
-
-//	@Transactional(value="write",readOnly=false)
-
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRED)
 	public <T> void  update(final T obj) throws PersistenceException {
 
 		if (obj==null) throw new PersistenceException(ErrorStatusType.UNPROCESSABLENTITY, "updating persisting object is null");
@@ -97,15 +94,13 @@ public  class WriteDaoImpl implements WriteDao{
 
 	}	    
 
-
-
 	/**
 	 * 
 	 * @param obj object
 	 * @throws PersistenceException persistenceException
 	 */
 
-	//@Transactional(value="write",readOnly=false)
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRED)
 	public <T> void save(T obj) throws PersistenceException {
 
 
@@ -132,11 +127,9 @@ public  class WriteDaoImpl implements WriteDao{
 	 * @return T  object of T
 	 * @throws PersistenceException persistenceException
 	 */
-//	@Transactional(value="write",readOnly=false)
+	@Transactional(readOnly=true,propagation=Propagation.REQUIRED)
 	public <T> T getByUid(Class<T> className, Object uid) throws PersistenceException {
 		try{
-
-
 			CriteriaBuilder cb = em.getCriteriaBuilder();
 			CriteriaQuery<T> cq = cb.createQuery(className);
 			Root<T> root = cq.from(className) ;
@@ -177,7 +170,7 @@ public  class WriteDaoImpl implements WriteDao{
 	 * @see com.nv.platform.base.dao.BaseDao#deleteWithId(int)
 	 */
 	@Override
-//	@Transactional(value="write",readOnly=false)
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRED)
 	public <T> void delete(Class<T> clazz,Object id) throws PersistenceException {
 
 
@@ -196,6 +189,25 @@ public  class WriteDaoImpl implements WriteDao{
 			throw pe;
 		}	
 
+	}
+	/* (non-Javadoc)
+	 * @see com.nv.platform.base.dao.BaseDao#executeUpdate(String,Object...)
+	 */
+
+	@Override
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRED)
+	public void executeUpdate(String queryStr, Object... params) throws PersistenceException {
+		Query query = em.createNativeQuery(queryStr);
+		int count=1;
+		for(Object param:params){
+	    	query.setParameter(paramString+count++,param);
+	    }
+		try{
+			query.executeUpdate();
+		}catch(RuntimeException e){
+			PersistenceException pe = new PersistenceException(ErrorStatusType.SERVICEUNAVAILABLE,"exception in execute native query",e);
+			throw pe;
+		}	
 	}
 }
 
