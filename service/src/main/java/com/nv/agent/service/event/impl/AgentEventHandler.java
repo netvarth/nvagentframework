@@ -76,7 +76,7 @@ public class AgentEventHandler {
 		return eventDetails;
 	}
 	
-	@Transactional(value="read",readOnly=true)
+	/*@Transactional(value="read",readOnly=true)
 	public EventDetails getEvent(int eventId) throws EventException{
 		NvEventTaskEntity nvEventTaskEntity;
 		EventDetails eventDetails = null;
@@ -91,5 +91,5 @@ public class AgentEventHandler {
 			throw new EventException(ErrorStatusType.UNPROCESSABLENTITY.toString());
 		}
 		return eventDetails;
-	}
+	}*/
 }
