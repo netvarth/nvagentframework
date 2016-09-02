@@ -41,7 +41,7 @@
 		</dependency>
 		<dependency>
 			<groupId>${nvframework.groupId}</groupId>
-			<artifactId>cache</artifactId>
+			<artifactId>eventbus</artifactId>
 			<version>${nvframework.version}</version>
 		</dependency>
 		<dependency>
