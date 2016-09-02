@@ -59,6 +59,7 @@
 	    <class>com.nv.platform.base.entity.sequence.SequenceGeneratorEntity</class>
 	    
 	    <class>com.nv.platform.event.NvEventTaskEntity</class>
+	      <class>com.nv.platform.event.AgentFwListenerEntity</class>
 	</persistence-unit>
 
 	<!--  <persistence-unit name="cache">

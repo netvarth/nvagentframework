@@ -34,6 +34,7 @@ public class EventTaskDaoTest {
 			nvEventTaskEntity.setCreatedDate(new Date());
 			nvEventTaskEntity.setEventClass(SignupEvent.class);
 			nvEventTaskEntity.setEventStatus(EventStatus.PUBLISHED);
+			nvEventTaskEntity.setSessionId("");
 			nvEventTaskEntity.setEventDescription("{\"emailTo\":\"asha.chandran@netvarth.com\"}");
 			baseDao.save(nvEventTaskEntity);
 		}

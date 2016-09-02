@@ -10,7 +10,7 @@
 		<property name="locations">
 			<list>
 				   <!-- <value>file:////ebs/apache-tomcat-8.0.30/conf/agent.properties</value> -->
-				<value>file:///E:/Installations/apache-tomcat-8.0.30/conf/agent.properties</value>  
+				<value>file:///C:/Installations/apache-tomcat-8.0.30/conf/agent.properties</value>  
 
 			</list>
 		</property>

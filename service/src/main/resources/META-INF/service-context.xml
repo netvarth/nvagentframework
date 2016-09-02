@@ -161,6 +161,17 @@
 		<constructor-arg index="0" ref="sendMsg" />
 		<constructor-arg index="1" ref="write.dao" />
 	</bean>
+	
+	<bean id="sendPushMsg" class="com.nv.platform.sendmsg.pushnotification.PushNotificationImpl">
+		<property name="googleAuthKey">
+			<value>${google.auth.key}</value>
+		</property>
+	</bean>
+	
+	<bean id="push.notification.processor" class="com.nv.agent.service.event.processors.PushNotificationEventProcessor">
+		<constructor-arg index="0" ref="sendPushMsg" />
+		<constructor-arg index="1" ref="write.dao" />
+	</bean>
 	<bean id="agent.event.handler" class="com.nv.agent.service.event.AgentEventHandler">
 		<constructor-arg index="0">
 			<map key-type="com.nv.platform.event.ActionType" value-type="com.nv.agent.service.event.EventProcessor">

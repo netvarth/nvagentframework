@@ -6,6 +6,7 @@
 package com.nv.ynw.agent.rs;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 
 import javax.websocket.CloseReason;
 import javax.websocket.Endpoint;
@@ -13,8 +14,9 @@ import javax.websocket.EndpointConfig;
 import javax.websocket.MessageHandler;
 import javax.websocket.Session;
 
-import com.nv.agent.service.event.impl.AgentEventHandler;
-import com.nv.agent.service.event.impl.EventDetails;
+import com.nv.agent.service.event.AgentEventHandler;
+import com.nv.agent.service.event.EventDetails;
+import com.nv.platform.base.dao.PersistenceException;
 import com.nv.platform.event.EventException;
 import com.nv.platform.event.EventStatus;
 import com.nv.platform.log.api.NVLogFormatter;
@@ -23,6 +25,7 @@ import com.nv.platform.log.impl.NVLoggerAPIFactory;
 import com.nv.platform.threadpool.impl.NVThreadPoolManager;
 import com.nv.platform.threadpool.impl.TaskExecutionResult;
 
+import java.util.List;
 import java.util.concurrent.Callable;
 
 public class AgentEndpoint extends Endpoint {
@@ -34,17 +37,35 @@ public class AgentEndpoint extends Endpoint {
 	/**
 	 * Constructor to set {@link AgentEventHandler}
 	 * @param agentEventHandler {@link AgentEventHandler}
+	 * @throws UnknownHostException {@link UnknownHostException}
+	 * @throws PersistenceException {@link PersistenceException}
 	 */
-	public AgentEndpoint(AgentEventHandler agentEventHandler) {
+	public AgentEndpoint(AgentEventHandler agentEventHandler) throws PersistenceException, UnknownHostException {
 		super();
 		this.agentEventHandler = agentEventHandler;
 		this.threadpoolService = NVThreadPoolManager.getInstance();
-		System.out.println("Agent endpoint started");
+		this.agentEventHandler.updateListenerParams();
+		logger.info(new NVLogFormatter("Websocket server endpoint initialization done"));
 	}
 	
 	@Override
 	public void onClose(Session session, CloseReason closeReason) {
-		
+		List<Integer> ids = agentEventHandler.getEventIds(session.getId());
+		for (Integer id : ids) {
+			EventDetails eventdetails;
+			try {
+				eventdetails = agentEventHandler.getEvent(id);
+				threadpoolService.submitTask(new Callable<TaskExecutionResult>() {
+					public TaskExecutionResult call() throws Exception {
+						eventdetails.getEventProcessor().process(eventdetails.getEvent(),eventdetails.getId());
+						return new TaskExecutionResult(true, "SUCCESS");
+					}
+				});
+			} catch (EventException e) {
+				logger.error(new NVLogFormatter("Error while retrieving unprocessed event details at the time of session closed by client",e));
+			}
+			
+		}
 	}
 	
 	/**

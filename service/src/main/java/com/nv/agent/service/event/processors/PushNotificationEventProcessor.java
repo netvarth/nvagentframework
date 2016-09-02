@@ -27,8 +27,8 @@ import com.nv.ynw.account.SignupEvent;
 /**
  * This class will handle email sending process
  */
-public class EmailEventProcessor implements EventProcessor{
-	private static final NVLogger logger = NVLoggerAPIFactory.getLogger(EmailEventProcessor.class);
+public class PushNotificationEventProcessor implements EventProcessor{
+	private static final NVLogger logger = NVLoggerAPIFactory.getLogger(PushNotificationEventProcessor.class);
 	private SendMsg sendMsg;
 	private WriteDao writeDao;
 	/**
@@ -36,7 +36,7 @@ public class EmailEventProcessor implements EventProcessor{
 	 * @param sendMsg {@link SendMsg}
 	 * @param writeDao {@link WriteDao}
 	 */
-	public EmailEventProcessor(SendMsg sendMsg,WriteDao writeDao) {
+	public PushNotificationEventProcessor(SendMsg sendMsg,WriteDao writeDao) {
 		super();
 		this.sendMsg = sendMsg;
 		this.writeDao = writeDao;
@@ -51,10 +51,10 @@ public class EmailEventProcessor implements EventProcessor{
 		if(event.getClass().isAssignableFrom(SignupEvent.class)){
 			SignupEvent signupEvent = (SignupEvent)event;
 			try {
-				sendMsg.send(MailType.reportHealth,signupEvent.getCredential());
+				sendMsg.sendPushMsg(signupEvent.getCredential(),signupEvent.getMessageTitle(), signupEvent.getMessageData());
 				updateSuccessEvent(eventId);
-			} catch (MessagingException | IOException | PersistenceException e){
-				logger.error(new NVLogFormatter("Error while sending email from EmailEventProcessor by websocket server",e));
+			} catch (MessagingException  e){
+				logger.error(new NVLogFormatter("Error while sending email from PushNotificationEventProcessor by websocket server",e));
 				updateFailureEvent(eventId);
 			}
 		}
@@ -72,7 +72,7 @@ public class EmailEventProcessor implements EventProcessor{
 			writeDao.update(nvEventTaskEntity);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
-			logger.error(new NVLogFormatter("Error while saving SUCCESS status in email event processor  ",e));
+			logger.error(new NVLogFormatter("Error while saving SUCCESS status in Push Notification event processor  ",e));
 		}
 	}
 	
@@ -87,7 +87,7 @@ public class EmailEventProcessor implements EventProcessor{
 			nvEventTaskEntity.setEventStatus(EventStatus.FAILURE);
 			writeDao.update(nvEventTaskEntity);
 		} catch (PersistenceException e) {
-			logger.error(new NVLogFormatter("Error while saving FAILURE status in email event processor",e));
+			logger.error(new NVLogFormatter("Error while saving FAILURE status in Push Notification event processor",e));
 		}
 	}
 }
