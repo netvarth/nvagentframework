@@ -1,11 +1,10 @@
 /**
- * EmailEventProcessor.java
+ * PushNotificationEventProcessor.java
  * 
- * @author NetvarthPC
+ * @author Asha Chandran
  */
 package com.nv.agent.service.event.processors;
 
-import java.io.IOException;
 import java.util.Date;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -20,17 +19,17 @@ import com.nv.platform.log.api.NVLogFormatter;
 import com.nv.platform.log.api.NVLogger;
 import com.nv.platform.log.impl.NVLoggerAPIFactory;
 import com.nv.platform.sendmsg.SendMsg;
-import com.nv.platform.sendmsg.SendMsg.MailType;
 import com.nv.platform.sendmsg.common.MessagingException;
 import com.nv.ynw.account.SignupEvent;
 
 /**
- * This class will handle email sending process
+ * This class will handle push notification sending process
  */
 public class PushNotificationEventProcessor implements EventProcessor{
 	private static final NVLogger logger = NVLoggerAPIFactory.getLogger(PushNotificationEventProcessor.class);
 	private SendMsg sendMsg;
 	private WriteDao writeDao;
+	
 	/**
 	 * Constructor 
 	 * @param sendMsg {@link SendMsg}
@@ -54,7 +53,7 @@ public class PushNotificationEventProcessor implements EventProcessor{
 				sendMsg.sendPushMsg(signupEvent.getCredential(),signupEvent.getMessageTitle(), signupEvent.getMessageData());
 				updateSuccessEvent(eventId);
 			} catch (MessagingException  e){
-				logger.error(new NVLogFormatter("Error while sending email from PushNotificationEventProcessor by websocket server",e));
+				logger.error(new NVLogFormatter("Error while sending push notification from PushNotificationEventProcessor by websocket server",e));
 				updateFailureEvent(eventId);
 			}
 		}

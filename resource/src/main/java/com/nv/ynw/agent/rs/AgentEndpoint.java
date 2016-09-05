@@ -27,7 +27,9 @@ import com.nv.platform.threadpool.impl.TaskExecutionResult;
 
 import java.util.List;
 import java.util.concurrent.Callable;
-
+/*
+ * This is websocket server endpoint
+ */
 public class AgentEndpoint extends Endpoint {
 	private static final NVLogger logger = NVLoggerAPIFactory.getLogger(AgentEndpoint.class);
 	private NVThreadPoolManager threadpoolService;
@@ -47,12 +49,12 @@ public class AgentEndpoint extends Endpoint {
 		this.agentEventHandler.updateListenerParams();
 		logger.info(new NVLogFormatter("Websocket server endpoint initialization done"));
 	}
-	
+
 	@Override
 	public void onClose(Session session, CloseReason closeReason) {
 		List<Integer> ids = agentEventHandler.getEventIds(session.getId());
 		for (Integer id : ids) {
-			EventDetails eventdetails;
+			final EventDetails eventdetails;
 			try {
 				eventdetails = agentEventHandler.getEvent(id);
 				threadpoolService.submitTask(new Callable<TaskExecutionResult>() {
@@ -64,10 +66,10 @@ public class AgentEndpoint extends Endpoint {
 			} catch (EventException e) {
 				logger.error(new NVLogFormatter("Error while retrieving unprocessed event details at the time of session closed by client",e));
 			}
-			
+
 		}
 	}
-	
+
 	/**
 	 * Open session
 	 * @param session {@link  Session}
@@ -98,14 +100,14 @@ public class AgentEndpoint extends Endpoint {
 					});
 
 					try {
-						//Send Received message to client
+						//Send success message to client
 						session.getBasicRemote().sendText(EventStatus.RECEIVED.name());
 					} catch (IOException e) {
 						logger.error(new NVLogFormatter("Error while sending message to client",e));
 					}
 				} catch (EventException e) {
 					try {
-						//Send message to client if client gives invalid data or if there is no entry in event table
+						//Send message to client if client gives invalid data or if there is no entry in event table for given event id
 						session.getBasicRemote().sendText(EventStatus.INVALID_DATA.name());
 					} catch (IOException e1) {
 						logger.error(new NVLogFormatter("Error while sending message to client",e1));

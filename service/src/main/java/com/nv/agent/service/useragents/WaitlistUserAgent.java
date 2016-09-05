@@ -20,16 +20,15 @@ import com.nv.platform.log.api.NVLogger;
 import com.nv.platform.log.impl.NVLoggerAPIFactory;
 
 /**
- * This agent will do the task of removing waitlist,delay,adjusting token and waiting time
+ * This agent will do the task of removing current waitlist,delay,adjusting token and waiting time
  */
 public class WaitlistUserAgent extends QuartzJobBean{
 	NVLogger logger = NVLoggerAPIFactory.getLogger(WaitlistUserAgent.class);
 
 	private WriteDao writeDao;
-	private static final String truncate_waitlist= "truncate table wait_list_tbl";
-	private static final String truncate_waitlist_delay= "truncate table waitlist_delay_tbl";
-	private static final String update_waitlist_time= "update waitlist_waitingtime_tbl set last_recalcuted_time='00:00:00',updated_time='00:00:00',waiting_time=0";
-	private static final String update_token= "update sequence_generator_tbl set last_counter_value=0 where table_name='WaitlistEntity'";
+	private static final String truncate_waitlist_cache= "truncate table wl_cache_tbl";
+	private static final String update_waitlist_time= "update acct_wl_stats_tbl set last_recalcuted_time='00:00:00',updated_time='00:00:00',waiting_time=0";
+	private static final String update_token= "update sequence_generator_tbl set current_value=0 where table_name='WaitlistCacheEntity'";
 	
 	/**
 	 * Execute job
@@ -40,8 +39,7 @@ public class WaitlistUserAgent extends QuartzJobBean{
 	protected void executeInternal(JobExecutionContext arg0) throws JobExecutionException {
 		logger.info("WaitlistManagerAgent executing at "+new Date());
 		try {
-			writeDao.executeUpdate(truncate_waitlist);
-			writeDao.executeUpdate(truncate_waitlist_delay);
+			writeDao.executeUpdate(truncate_waitlist_cache);
 			writeDao.executeUpdate(update_waitlist_time);
 			writeDao.executeUpdate(update_token);
 		} catch (PersistenceException e) {

@@ -176,6 +176,7 @@
 		<constructor-arg index="0">
 			<map key-type="com.nv.platform.event.ActionType" value-type="com.nv.agent.service.event.EventProcessor">
 				<entry key="SEND_MAIL" value-ref="email.processor"></entry>
+				<entry key="SEND_PUSHMSG" value-ref="push.notification.processor"></entry>
 			</map>
 		</constructor-arg>
 		<constructor-arg index="1" ref="read.dao" />

@@ -41,7 +41,7 @@ public class AgentEventHandler {
 	private JSONMapper objectMapper;
 	
 	private final String get_agentfw_listener = "from AgentFwListenerEntity as listener where listener.type='event'";
-	private final String get_event_ids_of_session = "select event.id from NvEventTaskEntity as event where event.sessionId=:param1 and event.eventStatus=:param2";
+	private final String get_event_ids_of_session = "select event.id from NvEventTaskEntity as event where event.sessionId=:param1 and event.eventStatus!=:param2";
 	/**
 	 * 
 	 * @param eventProcessors map with key {@link ActionType} and value {@link EventProcessor}
@@ -101,7 +101,11 @@ public class AgentEventHandler {
 		}
 		return eventDetails;
 	}
-	
+	/**
+	 * Update agent listener parameters
+	 * @throws PersistenceException {@link PersistenceException}
+	 * @throws UnknownHostException {@link UnknownHostException}
+	 */
 	@Transactional(value="write",readOnly=false)
 	public void updateListenerParams() throws PersistenceException, UnknownHostException{
 		/*try {*/
@@ -112,8 +116,8 @@ public class AgentEventHandler {
 				 agentFwListenerEntity.setCreated_date(new Date());
 				 agentFwListenerEntity.setHost(InetAddress.getLocalHost().getHostAddress());
 				 agentFwListenerEntity.setPort(8080);
-				 agentFwListenerEntity.setProtocol("ws");
-				 agentFwListenerEntity.setSecure("");
+				 agentFwListenerEntity.setProtocol("websocket");
+				 agentFwListenerEntity.setSecure(false);
 				 agentFwListenerEntity.setType("event");
 				 agentFwListenerEntity.setUpdated_date(new Date());
 				 writeDao.save(agentFwListenerEntity);
@@ -132,7 +136,7 @@ public class AgentEventHandler {
 	/**
 	 * Get event ids by given session id
 	 * @param sessionId session id
-	 * @return list of event ids
+	 * @return list of event id
 	 */
 	@Transactional(value="read",readOnly=true)
 	public List<Integer> getEventIds(String sessionId){
@@ -140,7 +144,7 @@ public class AgentEventHandler {
 		try {
 			eventIds = readDao.executeQuery(Integer.class,get_event_ids_of_session,sessionId,EventStatus.SUCCESS);
 		} catch (PersistenceException e) {
-			logger.error(new NVLogFormatter("Error while retrieving event ids of session id",e));
+			logger.error(new NVLogFormatter("Error while retrieving event ids by session id",e));
 		}
 		return eventIds;
 	}
