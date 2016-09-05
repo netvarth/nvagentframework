@@ -50,7 +50,6 @@ public  class WriteDaoImpl implements WriteDao{
 			T obj=em.find(a, id);
 			return obj;
 		}catch(NoResultException e){
-			//e.printStackTrace();
 			return null;
 		}catch (ClassCastException e) {
 			PersistenceException pe= new PersistenceException(ErrorStatusType.INTERNALSERVERERROR,"execption in getById",e);

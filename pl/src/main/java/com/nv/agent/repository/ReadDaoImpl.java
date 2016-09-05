@@ -1,7 +1,6 @@
 
 package com.nv.agent.repository;
 
-
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -15,12 +14,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.nv.platform.base.BasePlatformConstants;
 import com.nv.platform.base.dao.PersistenceException;
 import com.nv.platform.base.dao.ReadDao;
-import com.nv.platform.base.entity.BaseEntity;
 import com.nv.platform.base.exception.ErrorStatusType;
-import com.nv.platform.base.service.RequestScopeManager;
 import com.nv.platform.log.api.NVLogger;
 import com.nv.platform.log.impl.NVLoggerAPIFactory;
 
@@ -166,20 +162,20 @@ public class ReadDaoImpl implements ReadDao{
 			T obj=em.find(a, str);
 			return obj;
 		}catch(NoResultException e){
-			PersistenceException pe= new PersistenceException(ErrorStatusType.NOTFOUND,"execption in getById",e);
+			PersistenceException pe= new PersistenceException(ErrorStatusType.NOTFOUND,"exeception in getById",e);
 			throw pe;
 		}catch (ClassCastException e) {
-			PersistenceException pe= new PersistenceException(ErrorStatusType.INTERNALSERVERERROR,"execption in getById",e);
+			PersistenceException pe= new PersistenceException(ErrorStatusType.INTERNALSERVERERROR,"exeception in getById",e);
 
 			throw pe;
 		}catch (IllegalArgumentException e) {
 
-			PersistenceException pe= new PersistenceException(ErrorStatusType.INTERNALSERVERERROR,"execption in getById",e);
+			PersistenceException pe= new PersistenceException(ErrorStatusType.INTERNALSERVERERROR,"exeception in getById",e);
 
 			throw pe;
 		}catch(RuntimeException e){
 
-			PersistenceException pe = new PersistenceException(ErrorStatusType.SERVICEUNAVAILABLE,"execption in getById",e);
+			PersistenceException pe = new PersistenceException(ErrorStatusType.SERVICEUNAVAILABLE,"exeception in getById",e);
 
 			throw pe;
 		}
