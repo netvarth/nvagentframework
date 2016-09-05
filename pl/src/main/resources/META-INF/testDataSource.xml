@@ -9,9 +9,8 @@
 
 		<property name="locations">
 			<list>
-				   <!-- <value>file:////ebs/apache-tomcat-8.0.30/conf/agent.properties</value> -->
-				<value>file:///C:/Installations/apache-tomcat-8.0.30/conf/agent.properties</value>  
-
+				   <value>file:////ebs/apache-tomcat-8.0.30/conf/agent.properties</value>
+				<!-- <value>file:///E:/Installations/apache-tomcat-8.0.30/conf/agent.properties</value> -->
 			</list>
 		</property>
 		<property name="ignoreResourceNotFound" value="true" />
@@ -31,7 +30,7 @@
 	  <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource"
 		id="read.datasource.jndi">
 		<property value="com.mysql.jdbc.Driver" name="driverClassName" />
-		<property value="jdbc:mysql://localhost:3306/ynw" name="url" />
+		<property value="jdbc:mysql://127.0.0.1:3306/ynw" name="url" />
 		<property value="root" name="username" />
 		<property value="netvarth" name="password" />
 	</bean>	
