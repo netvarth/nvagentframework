@@ -72,7 +72,7 @@
 					<webXml>src\main\resources\web.xml</webXml>
 
 					<outputDirectory>/ebs/apache-tomcat-8.0.30/webapps</outputDirectory>
-				<!-- 	<outputDirectory>E:\Installations\apache-tomcat-8.0.30\webapps</outputDirectory> -->
+					<!-- <outputDirectory>E:\Installations\apache-tomcat-8.0.30\webapps</outputDirectory> -->
 					<warName>agent</warName>
 				</configuration>
 			</plugin>
