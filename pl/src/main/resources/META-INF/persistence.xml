@@ -6,7 +6,7 @@
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
-			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<!-- <property name="hibernate.hbm2ddl.auto" value="update" /> -->
 			<generator class="identity" />
 
 		</properties>
@@ -15,11 +15,11 @@
 		<class>com.nv.ynw.common.configuration.SystemConfiguration</class>
 		<class>com.nv.platform.base.account.Account</class>
 		<class>com.nv.platform.base.user.User</class>
- 		<class>com.nv.platform.aaa.login.LoginEntity</class>
+		<class>com.nv.platform.aaa.login.LoginEntity</class>
 		<class>com.nv.ynw.consumer.UserProfileEntity</class>
 		<class>com.nv.platform.aaa.OAuth.AccessKey</class>
 		<class>com.nv.ynw.account.AccountProfileEntity</class>
-		
+
 		<class>com.nv.ynw.provider.ProviderEntity</class>
 		<class>com.nv.ynw.consumer.ConsumerEntity</class>
 		<class>com.nv.platform.sendmsg.PendingMessageEntity</class>
@@ -45,36 +45,32 @@
 		<class>com.nv.ynw.waitlist.WaitlistDelayEntity</class>
 		<class>com.nv.ynw.waitlist.WaitlistWaitingTimeEntity</class>
 		<class>com.nv.ynw.waitlist.WaitlistCommunicationEntity</class>
-	    <class>com.nv.ynw.waitlist.WaitlistSettingsEntity</class>
+		<class>com.nv.ynw.waitlist.WaitlistSettingsEntity</class>
 		<class>com.nv.ynw.cache.account.AccountCache</class>
 		<class>com.nv.ynw.cache.availability.ProviderScheduleCache</class>
-		<class>com.nv.ynw.cache.availability.ProviderServiceScheduleCache</class>
+		<class>com.nv.ynw.cache.availability.ProviderServiceScheduleCache
+		</class>
 		<class>com.nv.platform.cache.CacheEntity</class>
 		<class>com.nv.ynw.cache.maintenance.MaintenanceEntity</class>
 		<class>com.nv.ynw.cache.account.AccountCache</class>
 		<class>com.nv.ynw.cache.availability.ProviderScheduleCache</class>
-		<class>com.nv.ynw.cache.availability.ProviderServiceScheduleCache</class>
+		<class>com.nv.ynw.cache.availability.ProviderServiceScheduleCache
+		</class>
 		<class>com.nv.platform.cache.CacheEntity</class>
 		<class>com.nv.ynw.cache.maintenance.MaintenanceEntity</class>
-	    <class>com.nv.platform.base.entity.sequence.SequenceGeneratorEntity</class>
-	    
-	    <class>com.nv.platform.event.NvEventTaskEntity</class>
-	      <class>com.nv.platform.event.AgentFwListenerEntity</class>
+		<class>com.nv.platform.base.entity.sequence.SequenceGeneratorEntity
+		</class>
+
+		<class>com.nv.platform.event.NvEventTaskEntity</class>
+		<class>com.nv.platform.event.AgentFwListenerEntity</class>
 	</persistence-unit>
 
-	<!--  <persistence-unit name="cache">
-		<provider>org.hibernate.ejb.HibernatePersistence</provider>
-		<properties>
-			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
-			<property name="hibernate.hbm2ddl.auto" value="update" />
-			<generator class="identity" />
-			<property name="javax.persistence.lock.timeout" value="1000" />
-		</properties>
-
-		<class>com.nv.ynw.cache.account.AccountCache</class>
-		<class>com.nv.ynw.cache.availability.ProviderScheduleCache</class>
-		<class>com.nv.ynw.cache.availability.ProviderServiceScheduleCache</class>
-		<class>com.nv.platform.cache.CacheEntity</class>
-		<class>com.nv.ynw.cache.maintenance.MaintenanceEntity</class>
-	</persistence-unit> -->
- </persistence>
+	<!-- <persistence-unit name="cache"> <provider>org.hibernate.ejb.HibernatePersistence</provider> 
+		<properties> <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" 
+		/> <property name="hibernate.hbm2ddl.auto" value="update" /> <generator class="identity" 
+		/> <property name="javax.persistence.lock.timeout" value="1000" /> </properties> 
+		<class>com.nv.ynw.cache.account.AccountCache</class> <class>com.nv.ynw.cache.availability.ProviderScheduleCache</class> 
+		<class>com.nv.ynw.cache.availability.ProviderServiceScheduleCache</class> 
+		<class>com.nv.platform.cache.CacheEntity</class> <class>com.nv.ynw.cache.maintenance.MaintenanceEntity</class> 
+		</persistence-unit> -->
+</persistence>
