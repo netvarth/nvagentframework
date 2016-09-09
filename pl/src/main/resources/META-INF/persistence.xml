@@ -23,7 +23,7 @@
 		<class>com.nv.ynw.consumer.ConsumerEntity</class>
 		<class>com.nv.platform.sendmsg.PendingMessageEntity</class>
 		<class>com.nv.platform.auditlog.AuditLogEntity</class>
-		<class>com.nv.platform.health.HealthMonitorEntity</class>
+		<class>com.nv.platform.base.health.HealthMonitorEntity</class>
 		<class>com.nv.ynw.schedule.ProviderScheduleEntity</class>
 		<class>com.nv.ynw.service.ServiceEntity</class>
 		<class>com.nv.ynw.service.ServiceGroupEntity</class>
@@ -54,8 +54,8 @@
 		<class>com.nv.ynw.cache.availability.ProviderServiceScheduleCache</class>
 		<class>com.nv.platform.base.entity.sequence.SequenceGeneratorEntity</class>
 	    
-	    <class>com.nv.platform.event.NvEventTaskEntity</class>
-	    <class>com.nv.platform.event.AgentFwListenerEntity</class>
+	    <class>com.nv.platform.event.NvEventActionEntity</class>
+	      <class>com.nv.platform.agentfw.api.dao.AgentFwListenerEntity</class>
 	</persistence-unit>
 
 	<!--  <persistence-unit name="cache">

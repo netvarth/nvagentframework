@@ -3,16 +3,18 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 
-	<!-- For times when you just need to invoke a method on a specific object -->
-	<!-- <bean id="simpleJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
-		<property name="targetObject" ref="myBean" /> <property name="targetMethod" 
-		value="printMessage" /> </bean> -->
-	<!-- Run the job every 2 seconds with initial delay of 1 second -->
-	<!-- <bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean"> 
-		<property name="jobDetail" ref="simpleJobDetail" /> <property name="startDelay" 
-		value="1000" /> <property name="repeatInterval" value="2000" /> </bean> -->
-	<!-- For testing simpleTrigger jobs -->
-	<!-- <bean id="myBean" class="com.nv.agent.service.impl.TestSimpleTrigger"/> -->
+
+	<bean id="health.service" class="com.nv.agent.service.impl.AgentHealthManager"
+		init-method="init">
+		<constructor-arg index="0" ref="health.dao" />
+		<constructor-arg index="1">
+			<list>
+				<ref bean="sendMsg" />
+				<ref bean="sendPushMsg" />
+			</list>
+		</constructor-arg>
+		<constructor-arg index="2" ref="object.mapper" />
+	</bean>
 
 	<bean name="login.history.purge.agent"
 		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
@@ -36,7 +38,8 @@
 
 	<bean name="alert.purge.agent"
 		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-		<property name="jobClass" value="com.nv.agent.service.useragents.AlertUserAgent" />
+		<property name="jobClass"
+			value="com.nv.agent.service.useragents.AlertUserAgent" />
 		<property name="jobDataMap">
 			<map>
 				<entry key="readDao" value-ref="read.dao" />
@@ -52,11 +55,12 @@
 		<property name="jobDetail" ref="alert.purge.agent" />
 		<property name="cronExpression" value="0 05 12 * * ?" />
 	</bean>
-	
-	
+
+
 	<bean name="waitlist.manage.agent"
 		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-		<property name="jobClass" value="com.nv.agent.service.useragents.WaitlistUserAgent" />
+		<property name="jobClass"
+			value="com.nv.agent.service.useragents.WaitlistUserAgent" />
 		<property name="jobDataMap">
 			<map>
 				<entry key="writeDao" value-ref="write.dao" />
@@ -69,9 +73,9 @@
 	<bean id="waitlist.manage.agent.cronTrigger"
 		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="waitlist.manage.agent" />
-		<property name="cronExpression" value="0 55 23 * * ?" />
+		<property name="cronExpression" value="0 */2 * * * ?" />
 	</bean>
-	
+
 
 
 	<!-- Scheduler factory bean to glue together jobDetails and triggers to 
@@ -80,23 +84,15 @@
 		<property name="jobDetails">
 			<list>
 				<!-- <ref bean="simpleJobDetail" /> -->
-				
+
 				<ref bean="login.history.purge.agent" />
 				<ref bean="alert.purge.agent" />
 				<ref bean="waitlist.manage.agent" />
-				<!-- test starts-->
-				<!-- <ref bean="test1" />
-				<ref bean="test2" />
-				<ref bean="test3" />
-				<ref bean="test4" />
-				<ref bean="test5" />
-				<ref bean="test6" />
-				<ref bean="test7" />
-				<ref bean="test8" />
-				<ref bean="test9" />
-				<ref bean="test10" />
-				<ref bean="test11" />
-				<ref bean="test12" /> -->
+				<!-- test starts -->
+				<!-- <ref bean="test1" /> <ref bean="test2" /> <ref bean="test3" /> <ref 
+					bean="test4" /> <ref bean="test5" /> <ref bean="test6" /> <ref bean="test7" 
+					/> <ref bean="test8" /> <ref bean="test9" /> <ref bean="test10" /> <ref bean="test11" 
+					/> <ref bean="test12" /> -->
 				<!-- test ends -->
 			</list>
 		</property>
@@ -104,23 +100,16 @@
 		<property name="triggers">
 			<list>
 				<!-- <ref bean="simpleTrigger" /> -->
-				
+
 				<ref bean="login.history.purge.agent.cronTrigger" />
 				<ref bean="alert.purge.agent.cronTrigger" />
 				<ref bean="waitlist.manage.agent.cronTrigger" />
-				<!-- test starts-->
-				<!-- <ref bean="test1.cronTrigger" />
-				<ref bean="test2.cronTrigger" />
-				<ref bean="test3.cronTrigger" />
-				<ref bean="test4.cronTrigger" />
-				<ref bean="test5.cronTrigger" />
-				<ref bean="test6.cronTrigger" />
-				<ref bean="test7.cronTrigger" />
-				<ref bean="test8.cronTrigger" />
-				<ref bean="test9.cronTrigger" />
-				<ref bean="test10.cronTrigger" />
-				<ref bean="test11.cronTrigger" />
-				<ref bean="test12.cronTrigger" /> -->
+				<!-- test starts -->
+				<!-- <ref bean="test1.cronTrigger" /> <ref bean="test2.cronTrigger" /> 
+					<ref bean="test3.cronTrigger" /> <ref bean="test4.cronTrigger" /> <ref bean="test5.cronTrigger" 
+					/> <ref bean="test6.cronTrigger" /> <ref bean="test7.cronTrigger" /> <ref 
+					bean="test8.cronTrigger" /> <ref bean="test9.cronTrigger" /> <ref bean="test10.cronTrigger" 
+					/> <ref bean="test11.cronTrigger" /> <ref bean="test12.cronTrigger" /> -->
 				<!-- test ends -->
 			</list>
 		</property>
@@ -135,7 +124,7 @@
 	<bean class="com.nv.platform.json.JSONMapper" id="object.mapper" />
 
 
-	<bean id="sendMsg" class="com.nv.platform.sendmsg.email.SendMessageImpl">
+	<bean id="sendMsg" class="com.nv.agent.service.impl.AgentSendMessageImpl">
 		<property name="templates">
 			<list>
 				<ref bean="reportHealth.template" />
@@ -156,25 +145,26 @@
 			<value>${s3Url}</value>
 		</property>
 	</bean>
-	
-	<bean id="email.processor" class="com.nv.agent.service.event.processors.EmailEventProcessor">
+
+	<bean id="email.processor"
+		class="com.nv.agent.service.event.processors.EmailEventProcessor">
 		<constructor-arg index="0" ref="sendMsg" />
 		<constructor-arg index="1" ref="write.dao" />
 	</bean>
-	
-	<bean id="sendPushMsg" class="com.nv.platform.sendmsg.pushnotification.PushNotificationImpl">
-		<property name="googleAuthKey">
-			<value>${google.auth.key}</value>
-		</property>
+
+	<bean id="sendPushMsg"
+		class="com.nv.agent.service.impl.AgentPushNotificationImpl">
+		<constructor-arg index="0" value="${google.auth.key}" />
 	</bean>
-	
-	<bean id="push.notification.processor" class="com.nv.agent.service.event.processors.PushNotificationEventProcessor">
+
+	<bean id="push.notification.processor"
+		class="com.nv.agent.service.event.processors.PushNotificationEventProcessor">
 		<constructor-arg index="0" ref="sendPushMsg" />
 		<constructor-arg index="1" ref="write.dao" />
 	</bean>
 	<bean id="agent.event.handler" class="com.nv.agent.service.event.AgentEventHandler">
 		<constructor-arg index="0">
-			<map key-type="com.nv.platform.event.ActionType" value-type="com.nv.agent.service.event.EventProcessor">
+			<map key-type="com.nv.platform.event.EventActionType" value-type="com.nv.agent.service.event.EventProcessor">
 				<entry key="SEND_MAIL" value-ref="email.processor"></entry>
 				<entry key="SEND_PUSHMSG" value-ref="push.notification.processor"></entry>
 			</map>
@@ -201,179 +191,71 @@
 
 
 
-<!-- test starts-->
+	<!-- test starts -->
 
 
-<!-- <bean name="test1"
-		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-		<property name="jobClass" value="com.nv.agent.service.impl.test.Test1" />
-		<property name="durability" value="true" />
-	</bean>
-
-	Fire at 2.56 PM everyday
-	<bean id="test1.cronTrigger"
-		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-		<property name="jobDetail" ref="test1" />
-		<property name="cronExpression" value="0 */5 * * * ?" />
-	</bean>
-	
-	<bean name="test2"
-		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-		<property name="jobClass" value="com.nv.agent.service.impl.test.Test2" />
-		<property name="durability" value="true" />
-	</bean>
-
-	Fire at 2.56 PM everyday
-	<bean id="test2.cronTrigger"
-		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-		<property name="jobDetail" ref="test2" />
-		<property name="cronExpression" value="0 */5 * * * ?" />
-	</bean>
-	
-	<bean name="test3"
-		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-		<property name="jobClass" value="com.nv.agent.service.impl.test.Test3" />
-		
-		<property name="durability" value="true" />
-	</bean>
-
-	Fire at 2.56 PM everyday
-	<bean id="test3.cronTrigger"
-		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-		<property name="jobDetail" ref="test3" />
-		<property name="cronExpression" value="0 */5 * * * ?" />
-	</bean>
-	
-	
-	<bean name="test4"
-		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-		<property name="jobClass" value="com.nv.agent.service.impl.test.Test4" />
-		
-		<property name="durability" value="true" />
-	</bean>
-
-	Fire at 2.56 PM everyday
-	<bean id="test4.cronTrigger"
-		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-		<property name="jobDetail" ref="test4" />
-		<property name="cronExpression" value="0 */5 * * * ?" />
-	</bean>
-	
-	
-	<bean name="test5"
-		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-		<property name="jobClass" value="com.nv.agent.service.impl.test.Test5" />
-		
-		<property name="durability" value="true" />
-	</bean>
-
-	Fire at 2.56 PM everyday
-	<bean id="test5.cronTrigger"
-		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-		<property name="jobDetail" ref="test5" />
-		<property name="cronExpression" value="0 */5 * * * ?" />
-	</bean>
-	
-	
-	<bean name="test6"
-		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-		<property name="jobClass" value="com.nv.agent.service.impl.test.Test6" />
-		
-		<property name="durability" value="true" />
-	</bean>
-
-	Fire at 2.56 PM everyday
-	<bean id="test6.cronTrigger"
-		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-		<property name="jobDetail" ref="test6" />
-		<property name="cronExpression" value="0 */5 * * * ?" />
-	</bean>
-	
-	<bean name="test7"
-		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-		<property name="jobClass" value="com.nv.agent.service.impl.test.Test7" />
-		
-		<property name="durability" value="true" />
-	</bean>
-
-	Fire at 2.56 PM everyday
-	<bean id="test7.cronTrigger"
-		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-		<property name="jobDetail" ref="test7" />
-		<property name="cronExpression" value="0 */5 * * * ?" />
-	</bean>
-	
-	<bean name="test8"
-		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-		<property name="jobClass" value="com.nv.agent.service.impl.test.Test8" />
-		
-		<property name="durability" value="true" />
-	</bean>
-
-	Fire at 2.56 PM everyday
-	<bean id="test8.cronTrigger"
-		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-		<property name="jobDetail" ref="test8" />
-		<property name="cronExpression" value="0 */5 * * * ?" />
-	</bean>
-	
-	<bean name="test9"
-		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-		<property name="jobClass" value="com.nv.agent.service.impl.test.Test9" />
-	
-		<property name="durability" value="true" />
-	</bean>
-
-	Fire at 2.56 PM everyday
-	<bean id="test9.cronTrigger"
-		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-		<property name="jobDetail" ref="test9" />
-		<property name="cronExpression" value="0 */5 * * * ?" />
-	</bean>
-	
-	
-	<bean name="test10"
-		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-		<property name="jobClass" value="com.nv.agent.service.impl.test.Test10" />
-	
-		<property name="durability" value="true" />
-	</bean>
-
-	Fire at 2.56 PM everyday
-	<bean id="test10.cronTrigger"
-		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-		<property name="jobDetail" ref="test10" />
-		<property name="cronExpression" value="0 */5 * * * ?" />
-	</bean>
-	
-	<bean name="test11"
-		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-		<property name="jobClass" value="com.nv.agent.service.impl.test.Test11" />
-		
-		<property name="durability" value="true" />
-	</bean>
-
-	Fire at 2.56 PM everyday
-	<bean id="test11.cronTrigger"
-		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-		<property name="jobDetail" ref="test11" />
-		<property name="cronExpression" value="0 */5 * * * ?" />
-	</bean>
-	
-	<bean name="test12"
-		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-		<property name="jobClass" value="com.nv.agent.service.impl.test.Test12" />
-		
-		<property name="durability" value="true" />
-	</bean>
-
-	Fire at 2.56 PM everyday
-	<bean id="test12.cronTrigger"
-		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-		<property name="jobDetail" ref="test12" />
-		<property name="cronExpression" value="0 */5 * * * ?" />
-	</bean> -->
-<!-- test ends --> 
+	<!-- <bean name="test1" class="org.springframework.scheduling.quartz.JobDetailFactoryBean"> 
+		<property name="jobClass" value="com.nv.agent.service.impl.test.Test1" /> 
+		<property name="durability" value="true" /> </bean> Fire at 2.56 PM everyday 
+		<bean id="test1.cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+		<property name="jobDetail" ref="test1" /> <property name="cronExpression" 
+		value="0 */5 * * * ?" /> </bean> <bean name="test2" class="org.springframework.scheduling.quartz.JobDetailFactoryBean"> 
+		<property name="jobClass" value="com.nv.agent.service.impl.test.Test2" /> 
+		<property name="durability" value="true" /> </bean> Fire at 2.56 PM everyday 
+		<bean id="test2.cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+		<property name="jobDetail" ref="test2" /> <property name="cronExpression" 
+		value="0 */5 * * * ?" /> </bean> <bean name="test3" class="org.springframework.scheduling.quartz.JobDetailFactoryBean"> 
+		<property name="jobClass" value="com.nv.agent.service.impl.test.Test3" /> 
+		<property name="durability" value="true" /> </bean> Fire at 2.56 PM everyday 
+		<bean id="test3.cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+		<property name="jobDetail" ref="test3" /> <property name="cronExpression" 
+		value="0 */5 * * * ?" /> </bean> <bean name="test4" class="org.springframework.scheduling.quartz.JobDetailFactoryBean"> 
+		<property name="jobClass" value="com.nv.agent.service.impl.test.Test4" /> 
+		<property name="durability" value="true" /> </bean> Fire at 2.56 PM everyday 
+		<bean id="test4.cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+		<property name="jobDetail" ref="test4" /> <property name="cronExpression" 
+		value="0 */5 * * * ?" /> </bean> <bean name="test5" class="org.springframework.scheduling.quartz.JobDetailFactoryBean"> 
+		<property name="jobClass" value="com.nv.agent.service.impl.test.Test5" /> 
+		<property name="durability" value="true" /> </bean> Fire at 2.56 PM everyday 
+		<bean id="test5.cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+		<property name="jobDetail" ref="test5" /> <property name="cronExpression" 
+		value="0 */5 * * * ?" /> </bean> <bean name="test6" class="org.springframework.scheduling.quartz.JobDetailFactoryBean"> 
+		<property name="jobClass" value="com.nv.agent.service.impl.test.Test6" /> 
+		<property name="durability" value="true" /> </bean> Fire at 2.56 PM everyday 
+		<bean id="test6.cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+		<property name="jobDetail" ref="test6" /> <property name="cronExpression" 
+		value="0 */5 * * * ?" /> </bean> <bean name="test7" class="org.springframework.scheduling.quartz.JobDetailFactoryBean"> 
+		<property name="jobClass" value="com.nv.agent.service.impl.test.Test7" /> 
+		<property name="durability" value="true" /> </bean> Fire at 2.56 PM everyday 
+		<bean id="test7.cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+		<property name="jobDetail" ref="test7" /> <property name="cronExpression" 
+		value="0 */5 * * * ?" /> </bean> <bean name="test8" class="org.springframework.scheduling.quartz.JobDetailFactoryBean"> 
+		<property name="jobClass" value="com.nv.agent.service.impl.test.Test8" /> 
+		<property name="durability" value="true" /> </bean> Fire at 2.56 PM everyday 
+		<bean id="test8.cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+		<property name="jobDetail" ref="test8" /> <property name="cronExpression" 
+		value="0 */5 * * * ?" /> </bean> <bean name="test9" class="org.springframework.scheduling.quartz.JobDetailFactoryBean"> 
+		<property name="jobClass" value="com.nv.agent.service.impl.test.Test9" /> 
+		<property name="durability" value="true" /> </bean> Fire at 2.56 PM everyday 
+		<bean id="test9.cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+		<property name="jobDetail" ref="test9" /> <property name="cronExpression" 
+		value="0 */5 * * * ?" /> </bean> <bean name="test10" class="org.springframework.scheduling.quartz.JobDetailFactoryBean"> 
+		<property name="jobClass" value="com.nv.agent.service.impl.test.Test10" /> 
+		<property name="durability" value="true" /> </bean> Fire at 2.56 PM everyday 
+		<bean id="test10.cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+		<property name="jobDetail" ref="test10" /> <property name="cronExpression" 
+		value="0 */5 * * * ?" /> </bean> <bean name="test11" class="org.springframework.scheduling.quartz.JobDetailFactoryBean"> 
+		<property name="jobClass" value="com.nv.agent.service.impl.test.Test11" /> 
+		<property name="durability" value="true" /> </bean> Fire at 2.56 PM everyday 
+		<bean id="test11.cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+		<property name="jobDetail" ref="test11" /> <property name="cronExpression" 
+		value="0 */5 * * * ?" /> </bean> <bean name="test12" class="org.springframework.scheduling.quartz.JobDetailFactoryBean"> 
+		<property name="jobClass" value="com.nv.agent.service.impl.test.Test12" /> 
+		<property name="durability" value="true" /> </bean> Fire at 2.56 PM everyday 
+		<bean id="test12.cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+		<property name="jobDetail" ref="test12" /> <property name="cronExpression" 
+		value="0 */5 * * * ?" /> </bean> -->
+	<!-- test ends -->
 
 
 

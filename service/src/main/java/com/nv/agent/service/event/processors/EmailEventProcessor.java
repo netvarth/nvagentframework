@@ -13,9 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.nv.agent.service.event.EventProcessor;
 import com.nv.platform.base.dao.PersistenceException;
 import com.nv.platform.base.dao.WriteDao;
-import com.nv.platform.event.EventStatus;
+import com.nv.platform.event.ActionStatus;
 import com.nv.platform.event.NvEvent;
-import com.nv.platform.event.NvEventTaskEntity;
+import com.nv.platform.event.NvEventActionEntity;
 import com.nv.platform.log.api.NVLogFormatter;
 import com.nv.platform.log.api.NVLogger;
 import com.nv.platform.log.impl.NVLoggerAPIFactory;
@@ -66,9 +66,9 @@ public class EmailEventProcessor implements EventProcessor{
 	 */
 	private void updateSuccessEvent(int eventId){
 		try {
-			NvEventTaskEntity nvEventTaskEntity = writeDao.getById(NvEventTaskEntity.class, eventId);
+			NvEventActionEntity nvEventTaskEntity = writeDao.getById(NvEventActionEntity.class, eventId);
 			nvEventTaskEntity.setModifiedDate(new Date());
-			nvEventTaskEntity.setEventStatus(EventStatus.SUCCESS);
+			nvEventTaskEntity.setActionStatus(ActionStatus.COMPLETED);
 			writeDao.update(nvEventTaskEntity);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
@@ -82,9 +82,9 @@ public class EmailEventProcessor implements EventProcessor{
 	 */
 	private void updateFailureEvent(int eventId){
 		try {
-			NvEventTaskEntity nvEventTaskEntity = writeDao.getById(NvEventTaskEntity.class, eventId);
+			NvEventActionEntity nvEventTaskEntity = writeDao.getById(NvEventActionEntity.class, eventId);
 			nvEventTaskEntity.setModifiedDate(new Date());
-			nvEventTaskEntity.setEventStatus(EventStatus.FAILURE);
+			nvEventTaskEntity.setActionStatus(ActionStatus.FAILD_TO_EXECUTE);
 			writeDao.update(nvEventTaskEntity);
 		} catch (PersistenceException e) {
 			logger.error(new NVLogFormatter("Error while saving FAILURE status in email event processor",e));

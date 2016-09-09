@@ -406,13 +406,4 @@ public class ReadDaoImpl implements ReadDao{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	/* (non-Javadoc)
-	 * @see com.nv.platform.base.dao.ReadDao#executeUpdate(java.lang.String)
-	 */
-	@Override
-	public void executeUpdate(String String) throws PersistenceException {
-		// TODO Auto-generated method stub
-		
-	}
 }

@@ -13,7 +13,7 @@
 	<bean
 		class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
 
-	
+
 	<bean id="persistenceUnitManager"
 		class="org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager">
 		<property name="persistenceXmlLocations">
@@ -74,8 +74,15 @@
 		<qualifier value="read" />
 	</bean>
 
-	<bean id="read.dao" class="com.nv.agent.repository.ReadDaoImpl"/>
+	<bean id="read.dao" class="com.nv.agent.repository.ReadDaoImpl" />
 	<bean id="write.dao" class="com.nv.agent.repository.WriteDaoImpl"></bean>
+	<bean id="health.dao" class="com.nv.agent.repository.health.HealthDaoImpl"
+		parent="generic.dao"></bean>
+	<bean id="generic.dao" class="com.nv.agent.repository.GenericDaoImpl"
+		abstract="true">
+		<property name="baseDao" ref="write.dao" />
+		<property name="readDao" ref="read.dao" />
+	</bean>
 	<tx:annotation-driven transaction-manager="transaction.manager" />
 </beans>
   

@@ -195,7 +195,7 @@ public  class WriteDaoImpl implements WriteDao{
 
 	@Override
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED)
-	public void executeUpdate(String queryStr, Object... params) throws PersistenceException {
+	public int executeUpdate(String queryStr, Object... params) throws PersistenceException {
 		Query query = em.createNativeQuery(queryStr);
 		int count=1;
 		for(Object param:params){
@@ -206,7 +206,8 @@ public  class WriteDaoImpl implements WriteDao{
 		}catch(RuntimeException e){
 			PersistenceException pe = new PersistenceException(ErrorStatusType.SERVICEUNAVAILABLE,"exception in execute native query",e);
 			throw pe;
-		}	
+		}
+		return count;	
 	}
 }
 

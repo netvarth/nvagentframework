@@ -17,8 +17,8 @@ import javax.websocket.Session;
 import com.nv.agent.service.event.AgentEventHandler;
 import com.nv.agent.service.event.EventDetails;
 import com.nv.platform.base.dao.PersistenceException;
+import com.nv.platform.event.ActionStatus;
 import com.nv.platform.event.EventException;
-import com.nv.platform.event.EventStatus;
 import com.nv.platform.log.api.NVLogFormatter;
 import com.nv.platform.log.api.NVLogger;
 import com.nv.platform.log.impl.NVLoggerAPIFactory;
@@ -82,15 +82,8 @@ public class AgentEndpoint extends Endpoint {
 
 			public void onMessage(String text) {
 				try {
-					/*EventDetails eventdetails1 = agentEventHandler.getEvent(1);
-					EventDetails eventdetails2 = agentEventHandler.getEvent(1);
-					EventDetails eventdetails3 = agentEventHandler.getEvent(1);*/
 					//get event details from event tbl by event id given by client
 					final EventDetails eventdetails = agentEventHandler.getEvent(text);
-					/*EventDetails eventdetails4 = agentEventHandler.getEvent(1);
-					EventDetails eventdetails5 = agentEventHandler.getEvent(text);
-					EventDetails eventdetails6 = agentEventHandler.getEvent(text);
-					EventDetails eventdetails7 = agentEventHandler.getEvent(1);*/
 					//Submit event processor task to thread 
 					threadpoolService.submitTask(new Callable<TaskExecutionResult>() {
 						public TaskExecutionResult call() throws Exception {
@@ -101,14 +94,14 @@ public class AgentEndpoint extends Endpoint {
 
 					try {
 						//Send success message to client
-						session.getBasicRemote().sendText(EventStatus.RECEIVED.name());
+						session.getBasicRemote().sendText(ActionStatus.IN_PROGRESS.name());
 					} catch (IOException e) {
 						logger.error(new NVLogFormatter("Error while sending message to client",e));
 					}
 				} catch (EventException e) {
 					try {
 						//Send message to client if client gives invalid data or if there is no entry in event table for given event id
-						session.getBasicRemote().sendText(EventStatus.INVALID_DATA.name());
+						session.getBasicRemote().sendText("INVALID DATA");
 					} catch (IOException e1) {
 						logger.error(new NVLogFormatter("Error while sending message to client",e1));
 					}
