@@ -82,6 +82,13 @@ public class AgentEndpoint extends Endpoint {
 
 			public void onMessage(String text) {
 				try {
+					if(text!=null && text.equalsIgnoreCase("heartbeat")){
+						try {
+							session.getBasicRemote().sendText(text);
+						} catch (IOException e) {
+							logger.error(new NVLogFormatter("Error while sending hearbeat message to client",e));
+						}
+					}
 					//get event details from event tbl by event id given by client
 					final EventDetails eventdetails = agentEventHandler.getEvent(text);
 					//Submit event processor task to thread 
