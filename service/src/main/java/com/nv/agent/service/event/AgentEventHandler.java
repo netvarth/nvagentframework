@@ -82,7 +82,7 @@ public class AgentEventHandler {
 	 * @throws EventException  {@link EventException}
 	 */
 	@Transactional(value="write",readOnly=false)
-	public EventDetails getEvent(int eventId) throws EventException{
+	public EventDetails getEvent(int eventId) throws EventException {
 		NvEventActionEntity nvEventTaskEntity;
 		EventDetails eventDetails = null;
 		try {
@@ -96,7 +96,7 @@ public class AgentEventHandler {
 			nvEventTaskEntity.setModifiedDate(new Date());
 			nvEventTaskEntity.setActionStatus(ActionStatus.IN_PROGRESS);
 			writeDao.update(nvEventTaskEntity);
-		} catch (Exception e) {
+		} catch (PersistenceException |Exception e) {
 			throw new EventException(ErrorStatusType.UNPROCESSABLENTITY,"",e);
 		}
 		return eventDetails;
