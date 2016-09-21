@@ -18,8 +18,8 @@ import com.nv.platform.event.NvEventActionEntity;
 import com.nv.platform.log.api.NVLogFormatter;
 import com.nv.platform.log.api.NVLogger;
 import com.nv.platform.log.impl.NVLoggerAPIFactory;
-import com.nv.platform.sendmsg.SendMsg;
 import com.nv.platform.sendmsg.common.MessagingException;
+import com.nv.platform.sendmsg.pushnotification.SendPushMsg;
 import com.nv.ynw.account.SignupEvent;
 
 /**
@@ -27,7 +27,7 @@ import com.nv.ynw.account.SignupEvent;
  */
 public class PushNotificationEventProcessor implements EventProcessor{
 	private static final NVLogger logger = NVLoggerAPIFactory.getLogger(PushNotificationEventProcessor.class);
-	private SendMsg sendMsg;
+	private SendPushMsg sendMsg;
 	private WriteDao writeDao;
 	
 	/**
@@ -35,7 +35,7 @@ public class PushNotificationEventProcessor implements EventProcessor{
 	 * @param sendMsg {@link SendMsg}
 	 * @param writeDao {@link WriteDao}
 	 */
-	public PushNotificationEventProcessor(SendMsg sendMsg,WriteDao writeDao) {
+	public PushNotificationEventProcessor(SendPushMsg sendMsg,WriteDao writeDao) {
 		super();
 		this.sendMsg = sendMsg;
 		this.writeDao = writeDao;

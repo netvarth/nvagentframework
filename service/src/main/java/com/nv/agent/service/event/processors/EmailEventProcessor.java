@@ -19,9 +19,9 @@ import com.nv.platform.event.NvEventActionEntity;
 import com.nv.platform.log.api.NVLogFormatter;
 import com.nv.platform.log.api.NVLogger;
 import com.nv.platform.log.impl.NVLoggerAPIFactory;
-import com.nv.platform.sendmsg.SendMsg;
-import com.nv.platform.sendmsg.SendMsg.MailType;
 import com.nv.platform.sendmsg.common.MessagingException;
+import com.nv.platform.sendmsg.email.SendEmailMsg;
+import com.nv.platform.sendmsg.email.SendEmailMsg.MailType;
 import com.nv.ynw.account.SignupEvent;
 
 /**
@@ -29,14 +29,14 @@ import com.nv.ynw.account.SignupEvent;
  */
 public class EmailEventProcessor implements EventProcessor{
 	private static final NVLogger logger = NVLoggerAPIFactory.getLogger(EmailEventProcessor.class);
-	private SendMsg sendMsg;
+	private SendEmailMsg sendMsg;
 	private WriteDao writeDao;
 	/**
 	 * Constructor 
 	 * @param sendMsg {@link SendMsg}
 	 * @param writeDao {@link WriteDao}
 	 */
-	public EmailEventProcessor(SendMsg sendMsg,WriteDao writeDao) {
+	public EmailEventProcessor(SendEmailMsg sendMsg,WriteDao writeDao) {
 		super();
 		this.sendMsg = sendMsg;
 		this.writeDao = writeDao;
@@ -51,7 +51,7 @@ public class EmailEventProcessor implements EventProcessor{
 		if(event.getClass().isAssignableFrom(SignupEvent.class)){
 			SignupEvent signupEvent = (SignupEvent)event;
 			try {
-				sendMsg.send(MailType.reportHealth,signupEvent.getCredential());
+				sendMsg.send(MailType.providerSignUp,signupEvent.getCredential());
 				updateSuccessEvent(eventId);
 			} catch (MessagingException | IOException | PersistenceException e){
 				logger.error(new NVLogFormatter("Error while sending email from EmailEventProcessor by websocket server",e));
