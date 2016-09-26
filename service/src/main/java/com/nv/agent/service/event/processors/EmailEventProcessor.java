@@ -22,7 +22,7 @@ import com.nv.platform.log.impl.NVLoggerAPIFactory;
 import com.nv.platform.sendmsg.common.MessagingException;
 import com.nv.platform.sendmsg.email.SendEmailMsg;
 import com.nv.platform.sendmsg.email.SendEmailMsg.MailType;
-import com.nv.ynw.account.SignupEvent;
+import com.nv.ynw.account.SignUpEvent;
 
 /**
  * This class will handle email sending process
@@ -33,7 +33,7 @@ public class EmailEventProcessor implements EventProcessor{
 	private WriteDao writeDao;
 	/**
 	 * Constructor 
-	 * @param sendMsg {@link SendMsg}
+	 * @param sendMsg {@link SendEmailMsg}
 	 * @param writeDao {@link WriteDao}
 	 */
 	public EmailEventProcessor(SendEmailMsg sendMsg,WriteDao writeDao) {
@@ -48,8 +48,8 @@ public class EmailEventProcessor implements EventProcessor{
 	 */
 	@Transactional(value="write",readOnly=false)
 	public void process(NvEvent event,int eventId){
-		if(event.getClass().isAssignableFrom(SignupEvent.class)){
-			SignupEvent signupEvent = (SignupEvent)event;
+		if(event.getClass().isAssignableFrom(SignUpEvent.class)){
+			SignUpEvent signupEvent = (SignUpEvent)event;
 			try {
 				sendMsg.send(MailType.providerSignUp,signupEvent.getCredential());
 				updateSuccessEvent(eventId);

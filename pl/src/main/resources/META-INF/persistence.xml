@@ -11,7 +11,7 @@
 		</properties>
 
 		<class>com.nv.platform.alert.AlertEntity</class>
-		<class>com.nv.ynw.common.configuration.SystemConfiguration</class>
+		<class>com.nv.ynw.configuration.SystemConfiguration</class>
 		<class>com.nv.platform.base.account.Account</class>
 		<class>com.nv.platform.base.user.User</class>
  		<class>com.nv.platform.aaa.login.LoginEntity</class>
@@ -54,8 +54,8 @@
 		<class>com.nv.ynw.cache.availability.ProviderServiceScheduleCache</class>
 		<class>com.nv.platform.base.entity.sequence.SequenceGeneratorEntity</class>
 	    
-	    <class>com.nv.platform.event.NvEventActionEntity</class>
-	      <class>com.nv.platform.agentfw.api.dao.AgentFwListenerEntity</class>
+	   <class>com.nv.ynw.event.action.YnwEventActionEntity</class>
+	   <class>com.nv.platform.agentfw.api.dao.AgentFwListenerEntity</class>
 	</persistence-unit>
 
 	<!--  <persistence-unit name="cache">

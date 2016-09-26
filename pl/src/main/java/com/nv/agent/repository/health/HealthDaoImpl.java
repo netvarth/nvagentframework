@@ -10,7 +10,7 @@ import com.nv.platform.alert.AlertDao;
 import com.nv.platform.base.dao.PersistenceException;
 import com.nv.platform.base.health.HealthMonitorEntity;
 import com.nv.platform.health.HealthDao;
-import com.nv.ynw.common.configuration.SystemConfiguration;
+import com.nv.ynw.configuration.SystemConfiguration;
 import com.nv.agent.repository.GenericDaoImpl;
 
 /**
@@ -26,11 +26,10 @@ public class HealthDaoImpl extends GenericDaoImpl<HealthMonitorEntity> implement
 	 * private static final variables
 	 */
 	private static final String get_health_monitor = "from HealthMonitorEntity health where health.createdDate>=:param1 and health.createdDate<=:param2 order by health.compId,health.createdDate asc";
-	private static final String get_health_monitor_by_id= "from HealthMonitorEntity health where health.compId=:param1 and health.createdDate>=:param2 and health.createdDate<=:param3";
 	private static final String get_system_configuration = "from SystemConfiguration system where system.name=:param1";
 	private static final String get_health_monitor_by_id_str= "from HealthMonitorEntity health where health.createdDate>=:param1 and health.createdDate<=:param2 and ";
-	@Override
 	
+	@Override
 	public List<HealthMonitorEntity> getHealthMonitors(Date from, Date to) throws PersistenceException {
 		//Query query = baseDao.buildQuery(get_health_monitor).setParameter("param1", from);	
 		//query.setParameter("param2", to);

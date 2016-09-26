@@ -109,15 +109,6 @@ public class GenericDaoImpl<T> implements GenericDao<T>{
 
 
 	/* (non-Javadoc)
-	 * @see com.nv.platform.base.dao.WriteDao#deleteWithId(int)
-	 */
-	@Override
-	public void delete(int id) throws PersistenceException {
-		this.baseDao.delete(type, id);
-	}
-
-
-	/* (non-Javadoc)
 	 * @see com.nv.platform.base.dao.GenericDao#executeUniqueQuery(java.lang.Class, java.lang.String, java.lang.Object[])
 	 */
 	@Override
@@ -161,6 +152,13 @@ public class GenericDaoImpl<T> implements GenericDao<T>{
 	@Override
 	public int executeUpdate(String query, Object... param) throws PersistenceException {
 		return baseDao.executeUpdate(query,param);
+		
+	}
+
+
+	@Override
+	public void delete(Object id) throws PersistenceException {
+		this.baseDao.delete(type, id);
 		
 	}
 

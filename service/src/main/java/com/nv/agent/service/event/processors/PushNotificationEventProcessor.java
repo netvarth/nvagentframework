@@ -20,7 +20,7 @@ import com.nv.platform.log.api.NVLogger;
 import com.nv.platform.log.impl.NVLoggerAPIFactory;
 import com.nv.platform.sendmsg.common.MessagingException;
 import com.nv.platform.sendmsg.pushnotification.SendPushMsg;
-import com.nv.ynw.account.SignupEvent;
+import com.nv.ynw.account.SignUpEvent;
 
 /**
  * This class will handle push notification sending process
@@ -32,7 +32,7 @@ public class PushNotificationEventProcessor implements EventProcessor{
 	
 	/**
 	 * Constructor 
-	 * @param sendMsg {@link SendMsg}
+	 * @param sendMsg {@link SendPushMsg}
 	 * @param writeDao {@link WriteDao}
 	 */
 	public PushNotificationEventProcessor(SendPushMsg sendMsg,WriteDao writeDao) {
@@ -47,8 +47,8 @@ public class PushNotificationEventProcessor implements EventProcessor{
 	 */
 	@Transactional(value="write",readOnly=false)
 	public void process(NvEvent event,int eventId){
-		if(event.getClass().isAssignableFrom(SignupEvent.class)){
-			SignupEvent signupEvent = (SignupEvent)event;
+		/*if(event.getClass().isAssignableFrom(SignUpEvent.class)){
+			SignUpEvent signupEvent = (SignUpEvent)event;
 			try {
 				sendMsg.sendPushMsg(signupEvent.getCredential(),signupEvent.getMessageTitle(), signupEvent.getMessageData());
 				updateSuccessEvent(eventId);
@@ -56,7 +56,7 @@ public class PushNotificationEventProcessor implements EventProcessor{
 				logger.error(new NVLogFormatter("Error while sending push notification from PushNotificationEventProcessor by websocket server",e));
 				updateFailureEvent(eventId);
 			}
-		}
+		}*/
 	}
 	
 	/**

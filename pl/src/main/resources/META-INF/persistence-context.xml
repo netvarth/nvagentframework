@@ -76,8 +76,8 @@
 
 	<bean id="read.dao" class="com.nv.agent.repository.ReadDaoImpl" />
 	<bean id="write.dao" class="com.nv.agent.repository.WriteDaoImpl"></bean>
-	<bean id="health.dao" class="com.nv.agent.repository.health.HealthDaoImpl"
-		parent="generic.dao"></bean>
+	<!-- <bean id="health.dao" class="com.nv.agent.repository.health.HealthDaoImpl"
+		parent="generic.dao"></bean> -->
 	<bean id="generic.dao" class="com.nv.agent.repository.GenericDaoImpl"
 		abstract="true">
 		<property name="baseDao" ref="write.dao" />

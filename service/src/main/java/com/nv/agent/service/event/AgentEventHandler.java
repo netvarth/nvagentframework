@@ -4,6 +4,7 @@
  * @author Asha Chandran
  */
 package com.nv.agent.service.event;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -20,7 +21,6 @@ import com.nv.platform.base.dao.ReadDao;
 import com.nv.platform.base.dao.WriteDao;
 import com.nv.platform.base.exception.ErrorStatusType;
 import com.nv.platform.event.ActionStatus;
-import com.nv.platform.event.EventActionType;
 import com.nv.platform.event.EventException;
 import com.nv.platform.event.NvEvent;
 import com.nv.platform.event.NvEventActionEntity;
@@ -29,13 +29,14 @@ import com.nv.platform.log.api.NVLogFormatter;
 import com.nv.platform.log.api.NVLogger;
 import com.nv.platform.agentfw.api.dao.AgentFwListenerEntity;
 import com.nv.platform.log.impl.NVLoggerAPIFactory;
+import com.nv.ynw.event.action.YnwEventActionType;
 
 /**
  * This class used to get event details and its event processor
  */
 public class AgentEventHandler {
 	private static final NVLogger logger = NVLoggerAPIFactory.getLogger(AgentEventHandler.class);
-	Map<EventActionType,EventProcessor> eventProcessors ;
+	Map<YnwEventActionType,EventProcessor> eventProcessors ;
 	private ReadDao readDao;
 	private WriteDao writeDao;
 	private JSONMapper objectMapper;
@@ -45,12 +46,12 @@ public class AgentEventHandler {
 	private final String get_event_by_id = "from NvEventActionEntity as event where event.eventId=:param1";
 	/**
 	 * 
-	 * @param eventProcessors map with key {@link EventActionType} and value {@link EventProcessor}
+	 * @param eventProcessors map with key {@link YnwEventActionType} and value {@link EventProcessor}
 	 * @param readDao {@link ReadDao}
 	 * @param objectMapper {@link JSONMapper}
 	 * @param writeDao  {@link WriteDao}
 	 */
-	public AgentEventHandler( Map<EventActionType, EventProcessor> eventProcessors,
+	public AgentEventHandler( Map<YnwEventActionType, EventProcessor> eventProcessors,
 			ReadDao readDao,JSONMapper objectMapper,WriteDao writeDao) {
 		super();
 		this.eventProcessors = eventProcessors;
@@ -96,7 +97,7 @@ public class AgentEventHandler {
 			nvEventTaskEntity.setModifiedDate(new Date());
 			nvEventTaskEntity.setActionStatus(ActionStatus.IN_PROGRESS);
 			writeDao.update(nvEventTaskEntity);
-		} catch (PersistenceException |Exception e) {
+		} catch (PersistenceException | IOException e) {
 			throw new EventException(ErrorStatusType.UNPROCESSABLENTITY,"",e);
 		}
 		return eventDetails;
