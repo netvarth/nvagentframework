@@ -37,7 +37,7 @@ public class ReadDaoImpl implements ReadDao{
 	 * @throws PersistenceException persistenceException
 	 */
 	@Transactional(readOnly=true,propagation=Propagation.REQUIRED)
-	public <T> T getById(Class<T> a, int id) throws PersistenceException {			
+	public <T> T getById(Class<T> a, Object id) throws PersistenceException {			
 		try{
 			T obj=em.find(a, id);
 			return obj;
