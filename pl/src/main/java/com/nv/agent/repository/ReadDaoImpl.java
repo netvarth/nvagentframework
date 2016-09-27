@@ -1,5 +1,5 @@
-
 package com.nv.agent.repository;
+
 
 import java.util.List;
 
@@ -19,8 +19,6 @@ import com.nv.platform.base.dao.ReadDao;
 import com.nv.platform.base.exception.ErrorStatusType;
 import com.nv.platform.log.api.NVLogger;
 import com.nv.platform.log.impl.NVLoggerAPIFactory;
-
-
 
 public class ReadDaoImpl implements ReadDao{
 	NVLogger logger = NVLoggerAPIFactory.getLogger(ReadDaoImpl.class);
@@ -42,7 +40,6 @@ public class ReadDaoImpl implements ReadDao{
 			T obj=em.find(a, id);
 			return obj;
 		}catch(NoResultException e){
-			//e.printStackTrace();
 			return null;
 		}catch (ClassCastException e) {
 			PersistenceException pe= new PersistenceException(ErrorStatusType.INTERNALSERVERERROR,"execption in getById",e);
@@ -60,17 +57,15 @@ public class ReadDaoImpl implements ReadDao{
 
 	}	
 	
-	@Transactional(readOnly=true,propagation=Propagation.REQUIRED)
+	@Transactional( readOnly=true,propagation=Propagation.REQUIRED)
 	public <T> T getByObjectId(Class<T> a, Object id) throws PersistenceException {			
 		try{
 			T obj=em.find(a, id);
 			return obj;
 		}catch(NoResultException e){
-			//e.printStackTrace();
 			return null;
 		}catch (ClassCastException e) {
 			PersistenceException pe= new PersistenceException(ErrorStatusType.INTERNALSERVERERROR,"execption in getById",e);
-			
 			throw pe;
 		}catch (IllegalArgumentException e) {
 			e.printStackTrace();
@@ -81,7 +76,6 @@ public class ReadDaoImpl implements ReadDao{
 			PersistenceException pe = new PersistenceException(ErrorStatusType.SERVICEUNAVAILABLE,"execption in getById",e);
 			throw pe;
 		}
-
 	}		
 		/**
 	 * 
@@ -90,7 +84,7 @@ public class ReadDaoImpl implements ReadDao{
 	 * @return T  object of T
 	 * @throws PersistenceException persistenceException
 	 */
-	@Transactional(readOnly=true,propagation=Propagation.REQUIRED)
+	@Transactional( readOnly=true,propagation=Propagation.REQUIRED)
 	public <T> T getByUid(Class<T> className, int uid) throws PersistenceException {
 		try{
 			Query query=em.createQuery("from "+className.getName()+" as obj where obj.uid=:uid");
@@ -101,23 +95,18 @@ public class ReadDaoImpl implements ReadDao{
 			throw pe;
 		}catch (ClassCastException e) {
 			PersistenceException pe= new PersistenceException(ErrorStatusType.INTERNALSERVERERROR,"execption in getByUid",e);
-
 			throw pe;
 		}catch (IllegalArgumentException e) {
-
 			PersistenceException pe= new PersistenceException(ErrorStatusType.INTERNALSERVERERROR,"execption in getByUid",e);
-
 			throw pe;
 		}catch(RuntimeException e){
-
 			PersistenceException pe = new PersistenceException(ErrorStatusType.SERVICEUNAVAILABLE,"execption in getById",e);
-
 			throw pe;
 		}
 	}
 
 
-	@Transactional(readOnly=true,propagation=Propagation.REQUIRED)
+	@Transactional( readOnly=true,propagation=Propagation.REQUIRED)
 	public <T> T getByUid(Class<T> className, String uid) throws PersistenceException {
 		try{
 			Query query=em.createQuery("from "+className.getName()+" as obj where obj.uid=:uid");
@@ -130,23 +119,15 @@ public class ReadDaoImpl implements ReadDao{
 		return result;    
 		}catch (ClassCastException e) {
 			PersistenceException pe= new PersistenceException(ErrorStatusType.INTERNALSERVERERROR,"execption in getByUid",e);
-
 			throw pe;
 		}catch (IllegalArgumentException e) {
-
 			PersistenceException pe= new PersistenceException(ErrorStatusType.INTERNALSERVERERROR,"execption in getByUid",e);
-
 			throw pe;
 		}catch(RuntimeException e){
-
 			PersistenceException pe = new PersistenceException(ErrorStatusType.SERVICEUNAVAILABLE,"execption in getById",e);
-
 			throw pe;
 		}
-	    
 	}
-
-
 
 	/**
 	 * 
@@ -156,31 +137,24 @@ public class ReadDaoImpl implements ReadDao{
 	 * @throws PersistenceException persistenceException
 	 */
 	
-	@Transactional(readOnly=true,propagation=Propagation.REQUIRED)
+	@Transactional( readOnly=true,propagation=Propagation.REQUIRED)
 	public <T> T getById(Class<T> a, String str) throws PersistenceException {
 		try{
 			T obj=em.find(a, str);
 			return obj;
 		}catch(NoResultException e){
-			PersistenceException pe= new PersistenceException(ErrorStatusType.NOTFOUND,"exeception in getById",e);
+			PersistenceException pe= new PersistenceException(ErrorStatusType.NOTFOUND,"execption in getById",e);
 			throw pe;
 		}catch (ClassCastException e) {
-			PersistenceException pe= new PersistenceException(ErrorStatusType.INTERNALSERVERERROR,"exeception in getById",e);
-
+			PersistenceException pe= new PersistenceException(ErrorStatusType.INTERNALSERVERERROR,"execption in getById",e);
 			throw pe;
 		}catch (IllegalArgumentException e) {
-
-			PersistenceException pe= new PersistenceException(ErrorStatusType.INTERNALSERVERERROR,"exeception in getById",e);
-
+			PersistenceException pe= new PersistenceException(ErrorStatusType.INTERNALSERVERERROR,"execption in getById",e);
 			throw pe;
 		}catch(RuntimeException e){
-
-			PersistenceException pe = new PersistenceException(ErrorStatusType.SERVICEUNAVAILABLE,"exeception in getById",e);
-
+			PersistenceException pe = new PersistenceException(ErrorStatusType.SERVICEUNAVAILABLE,"execption in getById",e);
 			throw pe;
 		}
-
-	
 	}
 
 	
@@ -191,42 +165,30 @@ public class ReadDaoImpl implements ReadDao{
 	 * @throws PersistenceException persistenceException
 	 */
 
-	@Transactional(readOnly=true,propagation=Propagation.REQUIRED)
+	@Transactional( readOnly=true,propagation=Propagation.REQUIRED)
 	public <T> List<T> loadAll(Class<T> className)throws PersistenceException{
 		List<T>  response=null;
 		try{
 			CriteriaBuilder cb = em.getCriteriaBuilder();
 			CriteriaQuery<T> cq = cb.createQuery(className);
-			
-			
-			
 			TypedQuery<T> query =em.createQuery(cq);
-			
 			query.setMaxResults(DEFAULTLIMIT);
 			response=query.getResultList();	}
 			catch (ClassCastException e) {
 				PersistenceException pe= new PersistenceException(ErrorStatusType.INTERNALSERVERERROR,"Exception in loadAll method",e);
-
 				throw pe;
 			}catch (IllegalArgumentException e) {
-				e.printStackTrace();
 				PersistenceException pe= new PersistenceException(ErrorStatusType.INTERNALSERVERERROR,"Exception in loadAllMethod",e);
-
 				throw pe;
 			}catch (RuntimeException e) {
 				PersistenceException pe = new PersistenceException(ErrorStatusType.SERVICEUNAVAILABLE,"Exception in loadAllMethod",e);
-
 				throw pe;
 			}
 		return response;
 	}
 
-	
-
-	
-
 	@Override
-	@Transactional(readOnly=true,propagation=Propagation.REQUIRED)
+	@Transactional( readOnly=true,propagation=Propagation.REQUIRED)
 	public <T> List<T> executeQuery(Class<T> clazz, String queryString,  int[] limits, Object ...params) throws PersistenceException {
 		Query query = em.createQuery(queryString);
 		int count=1;
@@ -245,25 +207,20 @@ public class ReadDaoImpl implements ReadDao{
 		}
 		catch (ClassCastException e) {
 			PersistenceException pe= new PersistenceException(ErrorStatusType.INTERNALSERVERERROR,"Exception in executeQuery",e);
-
 			throw pe;
 		}catch (IllegalArgumentException e) {
-			e.printStackTrace();
 			PersistenceException pe= new PersistenceException(ErrorStatusType.INTERNALSERVERERROR,"Exception in executeQuery",e);
-
 			throw pe;
 		}catch (RuntimeException e) {
 			PersistenceException pe = new PersistenceException(ErrorStatusType.SERVICEUNAVAILABLE,"execption in getById",e);
-
 			throw pe;
 		}
 		return response;
 
 	}
 
-	
 	@Override
-	@Transactional(readOnly=true,propagation=Propagation.REQUIRED)
+	@Transactional( readOnly=true,propagation=Propagation.REQUIRED)
 	public <T> List<T> executeQuery(Class<T> clazz, String queryString,  int[] limits) throws PersistenceException {
 		Query query = em.createQuery(queryString);
 		query.setFirstResult(limits[0]);
@@ -277,37 +234,30 @@ public class ReadDaoImpl implements ReadDao{
 		}
 		catch (ClassCastException e) {
 			PersistenceException pe= new PersistenceException(ErrorStatusType.INTERNALSERVERERROR,"Exception in executeQuery",e);
-
 			throw pe;
 		}catch (IllegalArgumentException e) {
 			e.printStackTrace();
 			PersistenceException pe= new PersistenceException(ErrorStatusType.INTERNALSERVERERROR,"Exception in executeQuery",e);
-
 			throw pe;
 		}catch (RuntimeException e) {
 			PersistenceException pe = new PersistenceException(ErrorStatusType.SERVICEUNAVAILABLE,"execption in getById",e);
-
 			throw pe;
 		}
 		return response;
 
 	}
 		
-	
-	
 	/* (non-Javadoc)
 	 * @see com.nv.ynw.repository.BaseDao#executeQuery(java.lang.Class, java.lang.String)
 	 */
 	@Override
-	@Transactional(readOnly=true,propagation=Propagation.REQUIRED)
+	@Transactional( readOnly=true,propagation=Propagation.REQUIRED)
 	public <T> List<T> executeQuery(Class<T> clazz, String queryString,Object ...params) throws PersistenceException {
 		TypedQuery<T> query = em.createQuery(queryString,clazz);
 		int count=1;
-
 		for(Object param:params){
 	    	query.setParameter(paramString+count++,param);
 	    }
-		
 		List<T>  response=null;
 		try{
 			response= query.getResultList();
@@ -317,26 +267,20 @@ public class ReadDaoImpl implements ReadDao{
 		}
 		catch (ClassCastException e) {
 			PersistenceException pe= new PersistenceException(ErrorStatusType.INTERNALSERVERERROR,"Exception in executeQuery",e);
-
 			throw pe;
 		}catch (IllegalArgumentException e) {
-			e.printStackTrace();
 			PersistenceException pe= new PersistenceException(ErrorStatusType.INTERNALSERVERERROR,"Exception in executeQuery",e);
-
 			throw pe;
 		}catch (RuntimeException e) {
 			PersistenceException pe = new PersistenceException(ErrorStatusType.SERVICEUNAVAILABLE,"execption in getById",e);
-
 			throw pe;
 		}
 		return response;
 
 	}
-	
-	
 
 	@Override
-	@Transactional(readOnly=true,propagation=Propagation.REQUIRED)
+	@Transactional( readOnly=true,propagation=Propagation.REQUIRED)
 	public <T> T executeUniqueQuery(Class<T> clazz, String queryString,Object ...params) throws PersistenceException {
 		TypedQuery<T> query = em.createQuery(queryString,clazz);
 		int count=1;
@@ -352,17 +296,13 @@ public class ReadDaoImpl implements ReadDao{
 		}
 		catch (ClassCastException e) {
 			PersistenceException pe= new PersistenceException(ErrorStatusType.INTERNALSERVERERROR,"Exception in executeUnique Query",e);
-
 			throw pe;
 		}catch (IllegalArgumentException e) {
 			e.printStackTrace();
 			PersistenceException pe= new PersistenceException(ErrorStatusType.INTERNALSERVERERROR,"Exception in executeUnique Query",e);
-
 			throw pe;
 		}catch (RuntimeException e) {
-			e.printStackTrace();
 			PersistenceException pe = new PersistenceException(ErrorStatusType.SERVICEUNAVAILABLE,"execeptionUniquery",e);
-
 			throw pe;
 		}
 		return response;
@@ -393,7 +333,6 @@ public class ReadDaoImpl implements ReadDao{
 	@Override
 	public <T> T lockAndExecuteUniqueQuery(Class<T> clazz, String queryString, Object... params)
 			throws PersistenceException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -403,7 +342,8 @@ public class ReadDaoImpl implements ReadDao{
 	@Override
 	public <T> List<T> lockAndExecuteQuery(Class<T> clazz, String queryString, Object... params)
 			throws PersistenceException {
-		// TODO Auto-generated method stub
 		return null;
 	}
+
+
 }

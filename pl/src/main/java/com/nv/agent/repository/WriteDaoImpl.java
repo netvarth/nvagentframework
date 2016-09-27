@@ -3,7 +3,6 @@ package com.nv.agent.repository;
 
 
 import javax.persistence.EntityManager;
-import javax.persistence.IdClass;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -17,13 +16,9 @@ import javax.persistence.metamodel.EntityType;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.nv.platform.base.BasePlatformConstants;
 import com.nv.platform.base.dao.PersistenceException;
 import com.nv.platform.base.dao.WriteDao;
-import com.nv.platform.base.entity.BaseEntity;
-import com.nv.platform.base.entity.sequence.IdGenerator;
 import com.nv.platform.base.exception.ErrorStatusType;
-import com.nv.platform.base.service.RequestScopeManager;
 /**
  * 
  *
@@ -44,12 +39,13 @@ public  class WriteDaoImpl implements WriteDao{
 	 * @return T object of T
 	 * @throws PersistenceException persistenceException
 	 */
-	@Transactional(readOnly=true,propagation=Propagation.REQUIRED)
+	@Transactional( readOnly=true,propagation=Propagation.REQUIRED)
 	public <T> T getById(Class<T> a, Object id) throws PersistenceException {			
 		try{
 			T obj=em.find(a, id);
 			return obj;
 		}catch(NoResultException e){
+			//e.printStackTrace();
 			return null;
 		}catch (ClassCastException e) {
 			PersistenceException pe= new PersistenceException(ErrorStatusType.INTERNALSERVERERROR,"execption in getById",e);
@@ -67,31 +63,26 @@ public  class WriteDaoImpl implements WriteDao{
 
 	}	
 
-	@Transactional(readOnly=false,propagation=Propagation.REQUIRED)
+	@Transactional( readOnly=false,propagation=Propagation.REQUIRED)
 	public <T> void  update(final T obj) throws PersistenceException {
 
 		if (obj==null) throw new PersistenceException(ErrorStatusType.UNPROCESSABLENTITY, "updating persisting object is null");
-		
 		try{
 			em.merge(obj);
 		}catch (ClassCastException e) {
-
 			PersistenceException pe= new PersistenceException(ErrorStatusType.INTERNALSERVERERROR,"exception in update",e);
-
 			throw pe;
 		}catch (IllegalArgumentException e) {
-
 			PersistenceException pe= new PersistenceException(ErrorStatusType.INTERNALSERVERERROR,"exception in update",e);
-
 			throw pe;
 		}catch(RuntimeException e){
-
 			PersistenceException pe = new PersistenceException(ErrorStatusType.SERVICEUNAVAILABLE,"exception in update" ,e);
-
 			throw pe;
 		}		
 
 	}	    
+
+
 
 	/**
 	 * 
@@ -99,22 +90,17 @@ public  class WriteDaoImpl implements WriteDao{
 	 * @throws PersistenceException persistenceException
 	 */
 
-	@Transactional(readOnly=false,propagation=Propagation.REQUIRED)
+	@Transactional( readOnly=false,propagation=Propagation.REQUIRED)
 	public <T> void save(T obj) throws PersistenceException {
-
-
 		try{
 			if (obj==null) throw new PersistenceException(ErrorStatusType.UNPROCESSABLENTITY, "updating persisting object is null");
 			em.persist(obj);
 		}catch (ClassCastException e) {
 			PersistenceException pe= new PersistenceException(ErrorStatusType.INTERNALSERVERERROR,"exception in save",e);
-
 			throw pe;
 		}
 		catch(RuntimeException e){
-
 			PersistenceException pe = new PersistenceException(ErrorStatusType.SERVICEUNAVAILABLE,"exception in save",e);
-
 			throw pe;
 		}		
 	}
@@ -126,7 +112,7 @@ public  class WriteDaoImpl implements WriteDao{
 	 * @return T  object of T
 	 * @throws PersistenceException persistenceException
 	 */
-	@Transactional(readOnly=true,propagation=Propagation.REQUIRED)
+	@Transactional( readOnly=false,propagation=Propagation.REQUIRED)
 	public <T> T getByUid(Class<T> className, Object uid) throws PersistenceException {
 		try{
 			CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -138,41 +124,28 @@ public  class WriteDaoImpl implements WriteDao{
 			cq.select(root);
 			TypedQuery<T> query =em.createQuery(cq);
 			T result=  query.getSingleResult();
+
 			return result;	
 		}catch(NoResultException e){
 			return null;
 		}catch (ClassCastException e) {
 			PersistenceException pe= new PersistenceException(ErrorStatusType.INTERNALSERVERERROR,"execption in getByUid",e);
-
 			throw pe;
 		}catch (IllegalArgumentException e) {
-
 			PersistenceException pe= new PersistenceException(ErrorStatusType.INTERNALSERVERERROR,"execption in getByUid",e);
-
 			throw pe;
 		}catch(RuntimeException e){
-
 			PersistenceException pe = new PersistenceException(ErrorStatusType.SERVICEUNAVAILABLE,"execption in getById",e);
-
 			throw pe;
 		}
 	}
-
-
-
-
-
-
-
 
 	/* (non-Javadoc)
 	 * @see com.nv.platform.base.dao.BaseDao#deleteWithId(int)
 	 */
 	@Override
-	@Transactional(readOnly=false,propagation=Propagation.REQUIRED)
+	@Transactional( readOnly=false,propagation=Propagation.REQUIRED)
 	public <T> void delete(Class<T> clazz,Object id) throws PersistenceException {
-
-
 		if (id==null) throw new PersistenceException(ErrorStatusType.UNPROCESSABLENTITY,"deleting object id refers null");	
 		try{
 			T obj=em.find(clazz,id);
@@ -182,19 +155,16 @@ public  class WriteDaoImpl implements WriteDao{
 			throw pe;
 		}
 		catch(RuntimeException e){
-
 			PersistenceException pe = new PersistenceException(ErrorStatusType.SERVICEUNAVAILABLE,"exception in delete",e);
-
 			throw pe;
 		}	
 
 	}
 	/* (non-Javadoc)
-	 * @see com.nv.platform.base.dao.BaseDao#executeUpdate(String,Object...)
+	 * @see com.nv.platform.base.dao.WriteDao#executeUpdate(String,Object...)
 	 */
-
-	@Override
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED)
+	@Override
 	public int executeUpdate(String queryStr, Object... params) throws PersistenceException {
 		Query query = em.createNativeQuery(queryStr);
 		int count=1;
