@@ -33,7 +33,7 @@ import org.springframework.util.ReflectionUtils;
 
 /**
  * Detects beans of type javax.websocket.server.ServerEndpointConfig and registers with the standard Java WebSocket runtime. Also detects beans annotated with javax.websocket.server.ServerEndpoint and registers them as well. Although not required, it is likely annotated endpoints should have their configurator property set to SpringConfigurator.
- * When this class is used, by declaring it in Spring configuration, it should be possible to turn off a Servlet container's scan for WebSocket endpoints. This can be done with the help of the <absolute-ordering> element in web.xml.
+ * When this class is used, by declaring it in Spring configuration, it should be possible to turn off a Servlet container{@literal '}s scan for WebSocket endpoints. This can be done with the help of the {@literal <}absolute-ordering{@literal />} element in web.xml.
  */
 public class   ServerEndpointExporter implements InitializingBean, BeanPostProcessor, ApplicationContextAware {
 
@@ -46,7 +46,7 @@ public class   ServerEndpointExporter implements InitializingBean, BeanPostProce
 
 	/**
 	 * Explicitly list annotated endpoint types that should be registered on startup. This can be done if you wish to turn off a Servlet container's scan for endpoints, which goes through all 3rd party jars in the, and rely on Spring configuration instead.
-	 * @param annotatedEndpointClasses
+	 * @param annotatedEndpointClasses annotated endpoint classes
 	 */
 
 
