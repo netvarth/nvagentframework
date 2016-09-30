@@ -3,6 +3,7 @@ package com.nv.agent.service.impl;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -34,9 +35,9 @@ public class AgentHealthManager extends HealthMonCollector{
 	 * @param components list of {@link Component}
 	 * @param objectMapper {@link JSONMapper}
 	 */
-	public AgentHealthManager(HealthDao healthDao,List<HealthCheck> components,JSONMapper objectMapper) {
+	public AgentHealthManager(HealthDao healthDao,List<HealthCheck> components,JSONMapper objectMapper,ExecutorService executor) {
 	
-		super(healthDao);
+		super(healthDao,executor);
 		this.components = components;
 		this.healthDao = healthDao;
 		this.objectMapper=objectMapper;
