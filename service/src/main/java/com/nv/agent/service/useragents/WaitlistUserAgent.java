@@ -35,7 +35,7 @@ public class WaitlistUserAgent extends QuartzJobBean{
 	 * @param arg0 {@link JobExecutionContext}
 	 */
 	@Override
-	@Transactional(value="write")
+	@Transactional(value="write",readOnly=false)
 	protected void executeInternal(JobExecutionContext arg0) throws JobExecutionException {
 		logger.info("WaitlistManagerAgent executing at "+new Date());
 		try {

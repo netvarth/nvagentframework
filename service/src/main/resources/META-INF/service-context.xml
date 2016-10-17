@@ -23,7 +23,27 @@
 		</property>
 	</bean>
 
+	<bean name="healthmonitor.agent"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+			value="com.nv.agent.service.useragents.HealthTrimUserAgent" />
+		<property name="jobDataMap">
+			<map>
+				<entry key="writeDao" value-ref="write.dao" />
+				<entry key="readDao" value-ref="read.dao" />
+			</map>
+		</property>
+		<property name="durability" value="true" />
+	</bean>
 
+	<!-- Fire at time given in cron expression -->
+	<bean id="healthmonitor.agent.cronTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="healthmonitor.agent" />
+		<property name="cronExpression">
+			<value>${health.cron.expression}</value>
+		</property>
+	</bean>
 
 	<!-- Scheduler factory bean to glue together jobDetails and triggers to 
 		Configure Quartz Scheduler -->
@@ -31,11 +51,13 @@
 		<property name="jobDetails">
 			<list>
 				<ref bean="waitlist.manage.agent" />
+				<ref bean="healthmonitor.agent" />
 			</list>
 		</property>
 		<property name="triggers">
 			<list>
 				<ref bean="waitlist.manage.agent.cronTrigger" />
+				<ref bean="healthmonitor.agent.cronTrigger" />
 			</list>
 		</property>
 	</bean>
@@ -108,45 +130,21 @@
 	</bean>
 
 
-<!-- <bean name="login.history.purge.agent"
-		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-		<property name="jobClass"
-			value="com.nv.agent.service.useragents.LoginHistoryUserAgent" />
-		<property name="jobDataMap">
-			<map>
-				<entry key="readDao" value-ref="read.dao" />
-				<entry key="writeDao" value-ref="write.dao" />
-			</map>
-		</property>
-		<property name="durability" value="true" />
-	</bean>
-
-	Fire at 4.30 PM on 1th of every month
-	<bean id="login.history.purge.agent.cronTrigger"
-		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-		<property name="jobDetail" ref="login.history.purge.agent" />
-		<property name="cronExpression" value="0 58 15 29 * ?" />
-	</bean>
-
-	<bean name="alert.purge.agent"
-		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-		<property name="jobClass"
-			value="com.nv.agent.service.useragents.AlertUserAgent" />
-		<property name="jobDataMap">
-			<map>
-				<entry key="readDao" value-ref="read.dao" />
-				<entry key="writeDao" value-ref="write.dao" />
-			</map>
-		</property>
-		<property name="durability" value="true" />
-	</bean>
-
-	Fire at 2.56 PM everyday
-	<bean id="alert.purge.agent.cronTrigger"
-		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-		<property name="jobDetail" ref="alert.purge.agent" />
-		<property name="cronExpression" value="0 05 12 * * ?" />
-	</bean> -->
+	<!-- <bean name="login.history.purge.agent" class="org.springframework.scheduling.quartz.JobDetailFactoryBean"> 
+		<property name="jobClass" value="com.nv.agent.service.useragents.LoginHistoryUserAgent" 
+		/> <property name="jobDataMap"> <map> <entry key="readDao" value-ref="read.dao" 
+		/> <entry key="writeDao" value-ref="write.dao" /> </map> </property> <property 
+		name="durability" value="true" /> </bean> Fire at 4.30 PM on 1th of every 
+		month <bean id="login.history.purge.agent.cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+		<property name="jobDetail" ref="login.history.purge.agent" /> <property name="cronExpression" 
+		value="0 58 15 29 * ?" /> </bean> <bean name="alert.purge.agent" class="org.springframework.scheduling.quartz.JobDetailFactoryBean"> 
+		<property name="jobClass" value="com.nv.agent.service.useragents.AlertUserAgent" 
+		/> <property name="jobDataMap"> <map> <entry key="readDao" value-ref="read.dao" 
+		/> <entry key="writeDao" value-ref="write.dao" /> </map> </property> <property 
+		name="durability" value="true" /> </bean> Fire at 2.56 PM everyday <bean 
+		id="alert.purge.agent.cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+		<property name="jobDetail" ref="alert.purge.agent" /> <property name="cronExpression" 
+		value="0 05 12 * * ?" /> </bean> -->
 	<!-- <bean id="health.service" class="com.nv.agent.service.impl.AgentHealthManager" 
 		init-method="init"> <constructor-arg index="0" ref="health.dao" /> <constructor-arg 
 		index="1"> <list> <ref bean="sendMsg" /> <ref bean="sendPushMsg" /> </list> 
