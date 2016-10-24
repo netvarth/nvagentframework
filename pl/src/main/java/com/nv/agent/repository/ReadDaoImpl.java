@@ -309,41 +309,4 @@ public class ReadDaoImpl implements ReadDao{
 
 	}
 
-	/* (non-Javadoc)
-	 * @see com.nv.platform.base.dao.readDao#lockAndget(java.lang.Class, int)
-	 */
-	@Override
-	public <T> T lockAndget(Class<T> clazz, int id) throws PersistenceException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.nv.platform.base.dao.ReadDao#updateAndUnlock(java.lang.Object)
-	 */
-	@Override
-	public <T> void updateAndUnlock(T obj) throws PersistenceException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	/* (non-Javadoc)
-	 * @see com.nv.platform.base.dao.ReadDao#lockAndExecuteUniqueQuery(java.lang.Class, java.lang.String, java.lang.Object[])
-	 */
-	@Override
-	public <T> T lockAndExecuteUniqueQuery(Class<T> clazz, String queryString, Object... params)
-			throws PersistenceException {
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.nv.platform.base.dao.ReadDao#lockAndExecuteQuery(java.lang.Class, java.lang.String, java.lang.Object[])
-	 */
-	@Override
-	public <T> List<T> lockAndExecuteQuery(Class<T> clazz, String queryString, Object... params)
-			throws PersistenceException {
-		return null;
-	}
-
-
 }
