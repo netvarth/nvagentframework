@@ -43,7 +43,7 @@ public class HealthTrimUserAgent extends QuartzJobBean{
 		logger.info("HealthTrimUserAgent executing at "+new Date());
 		try {
 			//keep records of health only for 5 days, remove older records 
-			List<Integer> healthIds = readDao.executeQuery(Integer.class, get_health,DateUtil.subtractDays(new Date(), 4));
+			List<Integer> healthIds = readDao.executeQuery(Integer.class, get_health,DateUtil.subtractDays(new Date(), 3));
 			for (Integer id : healthIds) {
 				writeDao.delete(HealthMonitorEntity.class, id);
 			}
