@@ -56,6 +56,8 @@
 	    
 	   <class>com.nv.ynw.event.action.YnwEventActionEntity</class>
 	   <class>com.nv.platform.agentfw.api.dao.AgentFwListenerEntity</class>
+	   <class>com.nv.ynw.consumer.FavoriteProviderEntity</class>
+	   
 	</persistence-unit>
 
 	<!--  <persistence-unit name="cache">
