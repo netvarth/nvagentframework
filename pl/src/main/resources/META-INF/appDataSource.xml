@@ -9,7 +9,8 @@
 <!--default setting, overwritten by the content from location property-->
 <property name="locations">
 <list>
-<value>file:///${catalina.home}/conf/agent.properties</value>
+  <value>file:////ebs/apache-tomcat-8.0.30/conf/agent.properties</value>
+				<!-- <value>file:///E:/Installations/apache-tomcat-8.0.30/conf/agent.properties</value> -->
 </list>
 </property>
 <property name="ignoreResourceNotFound" value="true" />
