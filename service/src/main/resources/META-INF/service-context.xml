@@ -21,11 +21,11 @@
 		<property name="cronExpression">
 			<value>${waitlist.cron.expression}</value>
 		</property>
-		<property name="timeZone">
+		<!-- <property name="timeZone">
             <bean class="java.util.TimeZone" factory-method="getTimeZone">
                 <constructor-arg value="Asia/Calcutta"/>
             </bean>
-        </property>
+        </property> -->
 	</bean>
 
 	<bean name="healthmonitor.agent"
@@ -48,11 +48,11 @@
 		<property name="cronExpression">
 			<value>${health.cron.expression}</value>
 		</property>
-		<property name="timeZone">
+		<!-- <property name="timeZone">
             <bean class="java.util.TimeZone" factory-method="getTimeZone">
                 <constructor-arg value="Asia/Calcutta"/>
             </bean>
-        </property>
+        </property> -->
 	</bean>
 
 	<!-- Scheduler factory bean to glue together jobDetails and triggers to 
