@@ -18,7 +18,7 @@
 	<bean id="waitlist.manage.agent.cronTrigger"
 		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="waitlist.manage.agent" />
-		<property name="cronExpression" value="0 0 12 * * ?"/>
+		<property name="cronExpression" value="0 10 12 * * ?"/>
 		<!-- <property name="timeZone">
             <bean class="java.util.TimeZone" factory-method="getTimeZone">
                 <constructor-arg value="Asia/Calcutta"/>
