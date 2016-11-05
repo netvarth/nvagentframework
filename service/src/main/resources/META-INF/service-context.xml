@@ -18,7 +18,9 @@
 	<bean id="waitlist.manage.agent.cronTrigger"
 		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="waitlist.manage.agent" />
-		<property name="cronExpression" value="0 20 11 * * ?"/>
+		<property name="cronExpression">
+			<value>${waitlist.cron.expression}</value>
+		</property>
 		
 	</bean>
 
