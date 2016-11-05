@@ -21,7 +21,6 @@
 		<property name="cronExpression">
 			<value>${waitlist.cron.expression}</value>
 		</property>
-		
 	</bean>
 
 	<bean name="healthmonitor.agent"
