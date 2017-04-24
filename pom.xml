@@ -17,7 +17,8 @@
   	<module>pl</module>
   	<module>service</module>
   	<module>resource</module>
-  
+
+  	<module>old</module>
   </modules>
   <build>
 			<plugins>
