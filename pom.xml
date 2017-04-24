@@ -19,6 +19,7 @@
   	<module>resource</module>
 
   	<module>old</module>
+  	<module>agentClient</module>
   </modules>
   <build>
 			<plugins>
